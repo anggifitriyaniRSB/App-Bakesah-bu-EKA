@@ -1,0 +1,1064 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>BAKESAH</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
+<style>
+/* Layout: one calm column (mobile-first). Bottom tab bar under 900px, left rail from 900px up.
+   Help pill stays in the top bar on every app screen. Display serif for headings, Figtree for UI. */
+:root{
+  --bg:#FAF8F2; --surface:#FFFFFF; --soft:#DCEBE7; --peach:#F4DDD2;
+  --fg:#253633; --fg2:#42544F; --muted:#667571; --line:#E3DFD3;
+  --primary:#245C59; --on-primary:#FFFFFF; --alert:#8E3A1C; --focus:#9A4A12;
+  --font-display:"Newsreader","Iowan Old Style",Georgia,serif;
+  --font-body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --r-sm:10px; --r-md:16px; --r-lg:22px;
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
+  --shadow:0 1px 2px rgba(37,54,51,.06),0 6px 18px rgba(37,54,51,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131E1D; --surface:#1B2A28; --soft:#233B38; --peach:#3B2C26;
+    --fg:#E8EFEC; --fg2:#C3D1CC; --muted:#9DB0AA; --line:#2E4440;
+    --primary:#7CC4BC; --on-primary:#0E1D1B; --alert:#F0AA8B; --focus:#F0B27A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131E1D; --surface:#1B2A28; --soft:#233B38; --peach:#3B2C26;
+  --fg:#E8EFEC; --fg2:#C3D1CC; --muted:#9DB0AA; --line:#2E4440;
+  --primary:#7CC4BC; --on-primary:#0E1D1B; --alert:#F0AA8B; --focus:#F0B27A;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+html[data-size="large"]{font-size:19px}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:1rem;line-height:1.55;
+  padding-block:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-text-size-adjust:100%;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+button,input,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1,h2{font-family:var(--font-display);font-weight:500;letter-spacing:-.01em;line-height:1.15}
+h1{font-size:1.9rem}
+h2{font-size:1.4rem}
+h3{font-size:1.05rem;font-weight:600;font-family:var(--font-body)}
+p{margin:0}
+ul,ol{margin:0;padding-left:1.2rem}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+h1:focus{outline:none}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.muted{color:var(--muted)}
+.eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--fg2)}
+.stack{display:flex;flex-direction:column;gap:var(--s-4)}
+.stack-lg{display:flex;flex-direction:column;gap:var(--s-5)}
+.row{display:flex;gap:var(--s-3);flex-wrap:wrap;align-items:center}
+
+/* shell */
+.app{max-width:1040px;margin:0 auto}
+.col{max-width:640px;margin:0 auto;min-width:0;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.rail{display:none}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin-bottom:var(--s-5)}
+.demo-strip{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2);padding:6px 0 0}
+.topbar-row{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);padding:6px 0 10px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.3rem;font-weight:600;letter-spacing:.02em}
+.brand svg{flex:none}
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;
+  padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.navbtn{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:56px;
+  background:none;border:0;border-radius:var(--r-sm);color:var(--fg2);font-size:.74rem;font-weight:500;cursor:pointer;padding:4px 2px}
+.navbtn[aria-current="page"]{color:var(--primary);font-weight:700;background:var(--soft)}
+.navbtn[aria-current="page"]::after{content:"";position:absolute;top:0;left:30%;right:30%;height:3px;border-radius:0 0 3px 3px;background:var(--primary)}
+@media (min-width:900px){
+  .app{display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px;padding-top:var(--s-5)}
+  .rail{display:flex;flex-direction:column;gap:var(--s-4);position:sticky;top:var(--s-5);align-self:start;max-height:calc(100vh - 48px)}
+  .rail .navbtn{flex-direction:row;justify-content:flex-start;gap:12px;padding:10px 14px;font-size:.98rem;min-height:48px}
+  .rail .navbtn[aria-current="page"]::after{display:none}
+  .rail-nav{display:flex;flex-direction:column;gap:4px}
+  .bottomnav{display:none}
+  .col{margin:0;padding-bottom:48px}
+  .topbar{position:static;border:0;margin-bottom:var(--s-4)}
+  .topbar .brand{display:none}
+  .topbar-row{justify-content:flex-end}
+}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 20px;border-radius:14px;
+  border:1.5px solid transparent;font-weight:600;font-size:1rem;cursor:pointer;text-align:center;line-height:1.25}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-outline{background:transparent;color:var(--primary);border-color:var(--primary)}
+.btn-soft{background:var(--soft);color:var(--fg)}
+.btn-text{background:none;color:var(--primary);text-decoration:underline;text-underline-offset:3px;min-height:44px;padding:8px 10px}
+.btn-block{width:100%}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.helppill{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 16px;border-radius:999px;border:1.5px solid var(--alert);
+  background:var(--peach);color:var(--fg);font-weight:700;font-size:.92rem;cursor:pointer}
+.helppill svg{color:var(--alert)}
+.back{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 12px 6px 6px;margin-left:-6px;background:none;border:0;color:var(--primary);font-weight:600;cursor:pointer;border-radius:12px}
+
+/* surfaces */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s-5);box-shadow:var(--shadow)}
+.card-flat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:var(--s-4)}
+.band{background:var(--soft);border-radius:var(--r-lg);padding:var(--s-5)}
+.band-peach{background:var(--peach);border-radius:var(--r-lg);padding:var(--s-5)}
+.notice{display:flex;gap:var(--s-3);align-items:flex-start;border-radius:var(--r-md);padding:var(--s-4);border:1.5px solid var(--line);background:var(--surface);font-size:.95rem}
+.notice > svg{flex:none;margin-top:2px}
+.notice-sim{background:var(--peach);border-color:var(--alert)}
+.notice-sim > svg{color:var(--alert)}
+.notice-soft{background:var(--soft);border-color:transparent}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1.5px solid var(--fg2);color:var(--fg2);background:transparent;white-space:nowrap}
+.tag-sim{border-color:var(--alert);color:var(--alert);background:var(--peach)}
+.tag-ok{border-color:var(--primary);color:var(--primary);background:var(--soft)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;padding:4px 12px;border-radius:999px;background:var(--soft);color:var(--fg)}
+.page-title{display:flex;flex-direction:column;gap:var(--s-2)}
+
+/* welcome */
+.plain{max-width:560px;margin:0 auto;padding-block:max(28px,env(safe-area-inset-top,0px)) 48px}
+.hero-mark{display:flex;align-items:center;gap:14px}
+.hero-title{font-size:2.6rem;font-weight:600;letter-spacing:.04em}
+.tagline{font-family:var(--font-display);font-style:italic;font-size:1.35rem;color:var(--fg2);line-height:1.3}
+.facts{display:grid;gap:var(--s-3)}
+.fact{display:grid;grid-template-columns:40px 1fr;gap:var(--s-3);align-items:start}
+.fact-ic{width:40px;height:40px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--primary)}
+
+/* home */
+.greet{display:flex;flex-direction:column;gap:6px}
+.mood-hero{display:grid;grid-template-columns:1fr auto;gap:var(--s-4);align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-3)}
+@media (max-width:340px){.grid2{grid-template-columns:1fr}}
+.tile{display:flex;flex-direction:column;gap:10px;text-align:left;min-height:150px;padding:var(--s-4);border-radius:var(--r-lg);border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--fg);box-shadow:var(--shadow)}
+.tile-ic{width:44px;height:44px;border-radius:14px;background:var(--soft);display:grid;place-items:center;color:var(--primary)}
+.tile h3{font-size:1.02rem}
+.tile small{color:var(--fg2);font-size:.86rem;line-height:1.4}
+.tile-help{background:var(--peach);border-color:var(--alert)}
+.tile-help .tile-ic{background:var(--surface);color:var(--alert)}
+.tile-main{grid-column:1/-1;min-height:0;flex-direction:row;align-items:center;gap:var(--s-4);background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.tile-main .tile-ic{background:rgba(255,255,255,.16);color:var(--on-primary)}
+.tile-main small{color:var(--on-primary);opacity:.92}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-3)}
+@media (min-width:420px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{display:flex;flex-direction:column;gap:2px;padding:var(--s-3);border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line)}
+.stat b{font-family:var(--font-display);font-size:1.9rem;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:.8rem;color:var(--fg2);line-height:1.3}
+
+/* lists */
+.list{display:flex;flex-direction:column;gap:var(--s-3);list-style:none;padding:0;margin:0}
+.mod{display:grid;grid-template-columns:1fr auto;gap:var(--s-3);align-items:center;width:100%;text-align:left;padding:var(--s-4);border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);cursor:pointer;color:var(--fg)}
+.mod h3{margin-bottom:4px}
+.mod p{font-size:.9rem;color:var(--fg2)}
+.mod-side{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.prose{display:flex;flex-direction:column;gap:var(--s-4);max-width:65ch}
+.prose p{font-size:1.02rem}
+.kv{display:grid;grid-template-columns:1fr;gap:4px;padding:var(--s-3) 0;border-top:1px solid var(--line)}
+.kv:first-child{border-top:0}
+.kv dt{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg2)}
+.kv dd{margin:0}
+.placeholder{border:1.5px dashed var(--fg2);border-radius:var(--r-sm);padding:8px 12px;font-size:.92rem;color:var(--fg2);background:transparent}
+dl{margin:0}
+
+/* forms */
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0;font-weight:600;font-size:1.1rem;margin-bottom:var(--s-3);line-height:1.35}
+.opts{display:flex;flex-direction:column;gap:10px}
+html[data-size="large"] .navbtn{font-size:.62rem}
+.opt,.chk{position:relative}
+.opt{display:flex;align-items:center;gap:var(--s-3);min-height:56px;padding:12px 16px;border-radius:var(--r-md);border:1.5px solid var(--line);background:var(--surface);cursor:pointer}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt-dot{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--fg2);display:grid;place-items:center;color:transparent}
+.opt input:checked ~ .opt-dot{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.opt:has(input:checked){border-color:var(--primary);background:var(--soft);font-weight:600}
+.opt:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:2px}
+.moods{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:10px}
+.mood-opt{position:relative;display:block;cursor:pointer}
+.mood-opt input{position:absolute;opacity:0;width:1px;height:1px}
+.mood-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;min-height:104px;border-radius:var(--r-md);border:1.5px solid var(--line);background:var(--surface);text-align:center;font-size:.92rem;font-weight:500;color:var(--fg)}
+.mood-card .tick{position:absolute;top:6px;right:6px;display:none;color:var(--primary)}
+.mood-opt input:checked + .mood-card{border-color:var(--primary);background:var(--soft);font-weight:700;box-shadow:inset 0 0 0 1px var(--primary)}
+.mood-opt input:checked + .mood-card .tick{display:block}
+.mood-opt input:focus-visible + .mood-card{outline:3px solid var(--focus);outline-offset:2px}
+.mood-card svg.face{color:var(--primary)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chk{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-size:.92rem}
+.chk input{position:absolute;opacity:0;width:1px;height:1px}
+.chk:has(input:checked){border-color:var(--primary);background:var(--soft);font-weight:600}
+.chk:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:2px}
+.chk .mark{width:18px;height:18px;border-radius:5px;border:2px solid var(--fg2);display:grid;place-items:center;color:transparent;flex:none}
+.chk input:checked ~ .mark{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+textarea{width:100%;min-height:96px;resize:vertical;padding:12px 14px;border-radius:var(--r-md);border:1.5px solid var(--fg2);background:var(--surface);line-height:1.5}
+.field-label{display:block;font-weight:600;margin-bottom:6px}
+.hint{font-size:.85rem;color:var(--muted)}
+.err{display:flex;gap:8px;align-items:flex-start;color:var(--alert);font-weight:600;font-size:.95rem}
+.progress{height:10px;border-radius:999px;background:var(--soft);overflow:hidden}
+.progress > i{display:block;height:100%;background:var(--primary);border-radius:999px}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);width:100%;min-height:56px;padding:10px 0;background:none;border:0;text-align:left;cursor:pointer;border-top:1px solid var(--line)}
+.switch:first-of-type{border-top:0}
+.switch-track{flex:none;position:relative;width:54px;height:30px;border-radius:999px;border:2px solid var(--fg2);background:transparent;display:flex;align-items:center;padding:0 4px;justify-content:flex-start;font-size:.62rem;font-weight:700}
+.switch[aria-checked="true"] .switch-track{background:var(--primary);border-color:var(--primary);justify-content:flex-end;color:var(--on-primary)}
+.switch-knob{width:18px;height:18px;border-radius:50%;background:var(--fg2)}
+.switch[aria-checked="true"] .switch-knob{background:var(--on-primary)}
+.seg{display:inline-flex;border:1.5px solid var(--primary);border-radius:12px;overflow:hidden}
+.seg button{min-height:44px;padding:8px 18px;background:transparent;border:0;cursor:pointer;font-weight:600;color:var(--primary)}
+.seg button[aria-pressed="true"]{background:var(--primary);color:var(--on-primary)}
+
+/* relax */
+.breath{display:flex;flex-direction:column;align-items:center;gap:var(--s-4);padding:var(--s-5) var(--s-4)}
+.breath-stage{position:relative;width:min(280px,76vw);aspect-ratio:1;display:grid;place-items:center}
+.breath-ring{position:absolute;inset:0;border-radius:50%;border:2px dashed var(--fg2);opacity:.55}
+.breath-orb{width:100%;height:100%;border-radius:50%;background:var(--soft);border:3px solid var(--primary);display:grid;place-items:center;will-change:transform}
+.breath-txt{position:absolute;text-align:center;display:flex;flex-direction:column;gap:2px;pointer-events:none}
+.breath-txt b{font-family:var(--font-display);font-size:1.5rem;font-weight:500}
+.breath-txt span{font-size:2.2rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+
+/* monitoring */
+.bars{display:flex;flex-direction:column;gap:10px}
+.barrow{display:grid;grid-template-columns:104px 1fr 28px;gap:10px;align-items:center;font-size:.9rem}
+.barrow .track{height:14px;border-radius:999px;background:var(--soft);overflow:hidden}
+.barrow .track i{display:block;height:100%;background:var(--primary);border-radius:999px}
+.barrow b{text-align:right;font-variant-numeric:tabular-nums}
+.timeline{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px}
+.tl{flex:none;width:84px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;font-size:.78rem;color:var(--fg2)}
+.tl svg{color:var(--primary)}
+.tl b{color:var(--fg);font-size:.82rem}
+.entry{display:grid;grid-template-columns:44px 1fr;gap:var(--s-3);padding:var(--s-3) 0;border-top:1px solid var(--line)}
+.entry:first-child{border-top:0}
+.entry svg.face{color:var(--primary)}
+.entry-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn-sm{min-height:44px;padding:6px 14px;font-size:.9rem;border-radius:12px}
+.act{display:grid;grid-template-columns:36px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line);align-items:center}
+.act:first-child{border-top:0}
+.act-ic{width:36px;height:36px;border-radius:10px;background:var(--soft);display:grid;place-items:center;color:var(--primary)}
+.empty{display:flex;flex-direction:column;align-items:center;gap:var(--s-3);text-align:center;padding:var(--s-6) var(--s-4);border:1.5px dashed var(--fg2);border-radius:var(--r-lg)}
+@media print{.bottomnav,.rail,.topbar,.no-print{display:none!important}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+<div id="root"></div>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script>
+(function(){
+'use strict';
+var useState=React.useState,useEffect=React.useEffect,useRef=React.useRef;
+var h=React.createElement;
+
+/* ---------- tiny element helpers (no build step) ---------- */
+var T={};
+['div','span','p','button','ul','ol','li','section','header','nav','main','h1','h2','h3','form','fieldset','legend','label','input','textarea','strong','small','aside','article','footer','dl','dt','dd'].forEach(function(t){
+  T[t]=function(props){var kids=Array.prototype.slice.call(arguments,1);return h.apply(null,[t,props].concat(kids));};
+});
+var div=T.div,span=T.span,para=T.p,btn=T.button,ul=T.ul,ol=T.ol,li=T.li,section=T.section,header=T.header,nav=T.nav,main=T.main,
+    h1=T.h1,h2=T.h2,h3=T.h3,form=T.form,fieldset=T.fieldset,legend=T.legend,lab=T.label,inp=T.input,ta=T.textarea,
+    strong=T.strong,small=T.small,aside=T.aside,article=T.article,dl=T.dl,dt=T.dt,dd=T.dd;
+
+/* ---------- content data (separate from UI) ---------- */
+var BRAND={name:'BAKESAH',full:'Sahabat Kesehatan Mental Ibu Hamil',tagline:'Kenali perasaan, rawat diri, cari dukungan.',version:'0.1.0-demo'};
+var SIM_LABEL='DEMO — TANPA SKOR, BUKAN DIAGNOSIS';
+var SIM_NOTE='Aplikasi demo ini hanya membantu Bunda mengisi lembar skrining. Aplikasi tidak menghitung skor dan tidak menentukan kondisi Bunda.';
+var BREATH_NOTE='Lakukan dengan nyaman. Hentikan latihan jika Bunda merasa pusing, sesak, panik, atau tidak nyaman.';
+var NO_REF='Belum ada rujukan — lengkapi sebelum digunakan.';
+var WHO_REF='Rujukan kandidat untuk ditelaah tim ahli: World Health Organization (2022), WHO guide for integration of perinatal mental health in maternal and child health services. Isi modul ini belum dicocokkan dengan rujukan tersebut.';
+
+var MODULES=[
+ {id:'e1',title:'Mengenali Kesehatan Mental Selama Kehamilan',
+  summary:'Perubahan perasaan selama hamil itu umum, dan layak diperhatikan.',
+  body:['Kehamilan membawa perubahan pada tubuh, hubungan, dan rencana hidup. Wajar bila perasaan Bunda naik turun: senang, khawatir, lelah, atau campuran semuanya.',
+        'Kesehatan mental sama pentingnya dengan kesehatan fisik. Perasaan yang berat bukan tanda Bunda lemah atau kurang bersyukur, dan bukan kesalahan Bunda.',
+        'Bila perasaan tidak nyaman bertahan, terasa berat, atau mengganggu kegiatan sehari-hari, berbicara dengan bidan atau tenaga kesehatan adalah langkah yang baik.'],
+  points:['Perasaan campur aduk selama hamil adalah hal yang umum.','Meminta dukungan adalah bagian dari merawat diri.','Perasaan berat yang bertahan layak dibicarakan dengan tenaga kesehatan.'],
+  activity:'Refleksi singkat: kata apa yang paling menggambarkan perasaan Bunda minggu ini? Siapa yang bisa Bunda ajak bicara tentang hal itu?',
+  consult:'Hubungi bidan atau tenaga kesehatan bila perasaan berat bertahan atau mengganggu aktivitas.',
+  source:WHO_REF},
+ {id:'e2',title:'Memahami Kecemasan',
+  summary:'Kekhawatiran saat hamil sering muncul. Kenali polanya dan kapan perlu bantuan.',
+  body:['Banyak ibu hamil merasa cemas tentang kesehatan bayi, persalinan, keluarga, atau perubahan peran. Rasa khawatir yang sesekali muncul bisa dialami siapa saja.',
+        'Pikiran seperti “bagaimana kalau…” dapat berulang dan terasa sulit dihentikan. Menyadari pemicu dan tanda di tubuh, misalnya jantung berdebar atau sulit tenang, membantu Bunda mengenali kapan perasaan itu muncul.',
+        'Bila kekhawatiran terasa terus-menerus, sulit dikendalikan, atau mengganggu tidur dan aktivitas, sampaikan kepada bidan atau tenaga kesehatan.'],
+  points:['Kecemasan punya pemicu dan tanda di tubuh yang bisa dikenali.','Berbagi kekhawatiran sering meringankan beban.','Kecemasan yang menetap layak dinilai oleh tenaga kesehatan.'],
+  activity:'Mengenali tanda diri: tuliskan tiga hal yang paling sering membuat Bunda khawatir, dan bagaimana tubuh Bunda terasa saat itu.',
+  consult:'Sampaikan kepada tenaga kesehatan bila kekhawatiran menetap, terasa berat, atau mengganggu aktivitas.',
+  source:NO_REF},
+ {id:'e3',title:'Mengelola Stres Sehari-hari',
+  summary:'Langkah kecil untuk memberi jeda dan membagi beban.',
+  body:['Stres adalah respons terhadap tuntutan. Selama hamil, tuntutan itu bisa datang dari pekerjaan, keuangan, keluarga, atau persiapan persalinan.',
+        'Beberapa pendekatan yang sering dipakai: memecah masalah besar menjadi langkah kecil, memberi jeda singkat di tengah hari, meminta bantuan orang terdekat, dan menyisakan waktu untuk hal yang menenangkan.',
+        'Tidak semua cara cocok untuk setiap orang. Pilih yang terasa mungkin dan nyaman bagi Bunda.'],
+  points:['Masalah besar lebih mudah dihadapi bila dipecah.','Jeda singkat dan meminta bantuan adalah strategi yang sah.','Pilih cara yang sesuai dengan kondisi Bunda.'],
+  activity:'Pilih satu strategi yang terasa paling mungkin minggu ini: jeda 5 menit, meminta bantuan satu hal, atau menunda satu tugas yang tidak mendesak.',
+  consult:'Bila stres terasa tak tertahankan atau berlangsung lama, bicarakan dengan bidan atau tenaga kesehatan.',
+  source:NO_REF},
+ {id:'e4',title:'Tidur dan Istirahat',
+  summary:'Perubahan tidur sering terjadi. Ketahui kapan perlu berkonsultasi.',
+  body:['Perubahan pola tidur umum terjadi selama kehamilan. Rasa tidak nyaman di tubuh, sering terbangun, atau pikiran yang aktif dapat memengaruhi istirahat.',
+        'Kebiasaan yang kerap disarankan antara lain jam tidur yang cukup teratur, suasana kamar yang nyaman, dan memberi waktu tenang sebelum tidur. Bila ada rasa tidak nyaman fisik, tanyakan posisi dan cara istirahat yang aman kepada bidan.',
+        'Gangguan tidur yang berlangsung lama atau membuat Bunda sangat lelah perlu dibicarakan dengan tenaga kesehatan.'],
+  points:['Perubahan tidur selama hamil adalah hal yang umum.','Waktu tenang sebelum tidur dapat membantu.','Gangguan tidur yang menetap perlu dikonsultasikan.'],
+  activity:'Catatan kebiasaan tidur: tuliskan jam Bunda tidur dan bangun selama tiga hari, lalu bawa catatan itu saat kontrol.',
+  consult:'Konsultasikan bila sulit tidur berlangsung berhari-hari atau mengganggu aktivitas siang hari.',
+  source:NO_REF},
+ {id:'e5',title:'Dukungan Sosial dan Keluarga',
+  summary:'Cara mengomunikasikan kebutuhan dan berbagi peran dengan orang terdekat.',
+  body:['Dukungan dari pasangan, keluarga, atau teman dapat membuat masa kehamilan terasa lebih ringan. Orang terdekat tidak selalu tahu apa yang Bunda butuhkan, jadi menyampaikannya secara jelas sangat membantu.',
+        'Bunda dapat memulai dengan satu permintaan yang spesifik, misalnya “Aku ingin ditemani saat kontrol” atau “Bisa bantu urusan rumah hari Sabtu?”. Membagi peran rumah tangga juga mengurangi beban.',
+        'Bila belum ada orang yang terasa aman untuk diajak bicara, bidan atau tenaga kesehatan dapat menjadi tempat pertama untuk bercerita.'],
+  points:['Permintaan yang spesifik lebih mudah dipenuhi.','Berbagi peran mengurangi beban.','Tenaga kesehatan juga bisa menjadi tempat bercerita.'],
+  activity:'Rencana dukungan: tuliskan satu hal yang ingin Bunda minta dari orang terdekat minggu ini, dan siapa yang akan Bunda minta.',
+  consult:'Bila Bunda merasa sendirian atau tidak memiliki orang yang bisa diajak bicara, hubungi bidan atau tenaga kesehatan.',
+  source:NO_REF},
+ {id:'e6',title:'Kapan dan Bagaimana Mencari Bantuan',
+  summary:'Tanda yang perlu diperhatikan dan jalur bantuan yang tersedia.',
+  body:['Carilah bantuan bila perasaan berat bertahan, sulit menjalankan aktivitas sehari-hari, atau Bunda merasa tidak kuat menghadapinya sendiri. Meminta bantuan bukan tanda kegagalan.',
+        'Langkah pertama dapat berupa berbicara dengan bidan atau tenaga kesehatan di fasilitas yang Bunda percaya. Mereka dapat membantu menilai dan, bila perlu, menghubungkan Bunda dengan psikolog atau psikiater.',
+        'Bila Bunda merasa tidak aman, atau muncul pikiran untuk menyakiti diri, jangan menghadapinya sendirian. Hubungi orang tepercaya yang dapat mendampingi, lalu segera ke IGD atau hubungi layanan darurat setempat.'],
+  points:['Bidan adalah pintu masuk yang bisa dihubungi lebih dulu.','Psikolog dan psikiater dapat menjadi bagian dari jalur bantuan.','Dalam bahaya langsung, cari bantuan langsung, bukan hanya membaca materi.'],
+  activity:'Lihat jalur bantuan: buka halaman Bantuan dan pikirkan siapa yang akan Bunda hubungi lebih dulu bila membutuhkan.',
+  consult:'Bila ada bahaya langsung atau pikiran menyakiti diri, segera cari bantuan langsung.',
+  source:WHO_REF,
+  helpLink:true}
+];
+var MODULE_BY_ID={};MODULES.forEach(function(m){MODULE_BY_ID[m.id]=m;});
+
+var MOODS=[
+ {id:'tenang',label:'Tenang'},{id:'baik',label:'Cukup baik'},{id:'biasa',label:'Biasa saja'},
+ {id:'cemas',label:'Cemas'},{id:'sedih',label:'Sedih'},{id:'tertekan',label:'Sangat tertekan'}
+];
+function moodLabel(id){for(var i=0;i<MOODS.length;i++)if(MOODS[i].id===id)return MOODS[i].label;return id;}
+var NEEDS=[
+ {id:'didengar',label:'Ingin didengarkan'},{id:'istirahat',label:'Butuh istirahat'},{id:'praktis',label:'Butuh bantuan praktis'},
+ {id:'bidan',label:'Ingin bicara dengan bidan'},{id:'belum',label:'Belum perlu dukungan'}
+];
+function needLabel(id){for(var i=0;i<NEEDS.length;i++)if(NEEDS[i].id===id)return NEEDS[i].label;return id;}
+
+var FASKES={name:'Klinik Polkesraya Medika',addr:'Jl. Dr. Soetomo no. 10, Palangka Raya',
+  hours:['Senin–Kamis (08.00–16.00 WIB)','Jumat (08.00–16.30 WIB)'],maps:'https://maps.app.goo.gl/6rogzufxdwepb66q9'};
+
+/* ---------- EPDS (Buku Saku Kemenkes 2026) ----------
+   Fase 1: aplikasi hanya MENCATAT jawaban. Tidak ada penjumlahan skor (menghindari SaMD).
+   rev = kunci penskoran untuk Fase 2 (a=0..d=3 bila false; a=3..d=0 bila true); TIDAK dipanggil di kode mana pun. */
+var EPDS={
+  id:'epds-kemenkes-2026',safetyItem:'e10',safetyOption:'a',
+  items:[
+   {id:'e1',rev:false,text:'Saya dapat tertawa dan melihat segi kelucuan hal-hal tertentu:',opts:['Seperti biasanya','Sekarang tidak terlalu sering','Sekarang agak jarang','Tidak sama sekali']},
+   {id:'e2',rev:false,text:'Saya menanti-nanti untuk melakukan sesuatu dengan penuh harapan:',opts:['Hampir seperti biasanya','Agak berkurang dari biasanya','Jelas berkurang dari biasanya','Hampir tidak sama sekali']},
+   {id:'e3',rev:true,text:'Saya menyalahkan diri sendiri jika ada sesuatu yang tidak berjalan dengan baik:',opts:['Ya, hampir selalu','Ya, kadang-kadang','Tidak terlalu sering','Tidak, tidak pernah']},
+   {id:'e4',rev:false,text:'Saya merasa cemas atau khawatir tanpa alasan:',opts:['Tidak, tidak sama sekali','Hampir tidak pernah','Ya, kadang-kadang','Ya, amat sering']},
+   {id:'e5',rev:true,text:'Saya merasa takut atau panik tanpa alasan:',opts:['Ya, sering sekali','Ya, kadang-kadang','Tidak, tidak terlalu','Tidak, tidak pernah sama sekali']},
+   {id:'e6',rev:true,text:'Banyak hal menjadi beban untuk saya:',opts:['Ya, seringkali saya sama sekali tidak dapat mengatasinya','Ya, kadang saya tidak dapat mengatasi seperti biasanya','Tidak, biasanya saya dapat mengatasinya dengan baik','Tidak, saya dapat mengatasinya dengan baik seperti biasanya']},
+   {id:'e7',rev:true,text:'Saya merasa begitu sedih sampai sulit tidur:',opts:['Ya, hampir selalu','Ya, kadang-kadang','Tidak, tidak sering','Tidak, tidak pernah']},
+   {id:'e8',rev:true,text:'Saya merasa sedih atau susah:',opts:['Ya, hampir selalu','Ya, sering','Jarang','Tidak pernah']},
+   {id:'e9',rev:true,text:'Saya merasa sangat sedih sehingga saya menangis:',opts:['Ya, hampir selalu','Ya, sering','Hanya sekali-kali','Tidak pernah']},
+   {id:'e10',rev:true,text:'Pikiran untuk mencelakai diri sendiri sering muncul:',opts:['Ya, agak sering','Kadang-kadang','Hampir tidak pernah','Tidak pernah']}
+  ]
+};
+var LETTERS=['a','b','c','d'];
+
+/* ---------- state ---------- */
+var _n=0;function uid(p){_n+=1;return p+'-'+_n+'-'+Date.now().toString(36);}
+function initialData(prefs){
+  return {completed:{},moods:[],activity:[],
+    screening:{step:'intro',idx:0,answers:{},error:null,runs:0},
+    prefs:prefs||{reminder:false,lockscreen:false,textSize:'normal'}};
+}
+function fmtDate(ts){
+  try{return new Date(ts).toLocaleString('id-ID',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});}
+  catch(e){return new Date(ts).toISOString().slice(0,16).replace('T',' ');}
+}
+function fmtDay(ts){
+  try{return new Date(ts).toLocaleDateString('id-ID',{day:'numeric',month:'short'});}
+  catch(e){return new Date(ts).toISOString().slice(0,10);}
+}
+function sampleData(){
+  var day=864e5,now=Date.now();
+  var rows=[[6,'biasa','Hari yang biasa saja. (Contoh fiktif)',['istirahat']],[5,'cemas','Memikirkan jadwal kontrol. (Contoh fiktif)',['didengar']],
+            [3,'baik','Ngobrol sebentar dengan tetangga. (Contoh fiktif)',[]],[2,'tenang','Jalan pagi yang menyenangkan. (Contoh fiktif)',[]],
+            [1,'biasa','Agak lelah sore ini. (Contoh fiktif)',['istirahat']]];
+  var moods=rows.map(function(r){return {id:uid('mood'),mood:r[1],note:r[2],needs:r[3],at:now-r[0]*day,sample:true};});
+  var acts=moods.map(function(m){return {id:uid('act'),type:'mood',label:'Catatan perasaan: '+moodLabel(m.mood),at:m.at,sample:true};});
+  acts.push({id:uid('act'),type:'relax',label:'Latihan pernapasan (contoh fiktif)',at:now-2*day+36e5,sample:true});
+  return {moods:moods,acts:acts};
+}
+
+/* ---------- icons ---------- */
+var ICONS={
+  home:'M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10',
+  screen:'M9 4h6v3H9zM7 5H5v16h14V5h-2M9 12h6M9 16h4',
+  book:'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5M8 7h7',
+  chart:'M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6',
+  user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
+  help:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6',
+  breath:'M3 12c3-6 6-6 9 0s6 6 9 0',
+  pencil:'M4 20l1-4L16 5l3 3L8 19zM14 7l3 3',
+  check:'M5 12.5l4.5 4.5L19 7.5',
+  back:'M15 5l-7 7 7 7',
+  chev:'M9 5l7 7-7 7',
+  shield:'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
+  info:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5M12 8h.01',
+  alert:'M12 3l10 18H2zM12 10v5M12 18h.01',
+  trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',
+  eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+  lock:'M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3',
+  heart:'M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z',
+  refresh:'M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7'
+};
+function Icon(props){
+  var size=props.size||22;
+  return h('svg',{viewBox:'0 0 24 24',width:size,height:size,'aria-hidden':'true',focusable:'false',fill:'none',stroke:'currentColor',strokeWidth:1.9,strokeLinecap:'round',strokeLinejoin:'round'},
+    h('path',{d:ICONS[props.name]}));
+}
+var FACES={
+  tenang:{m:'M13 24q7 6 14 0',b:''},
+  baik:{m:'M14 24.5q6 4 12 0',b:''},
+  biasa:{m:'M14 25h12',b:''},
+  cemas:{m:'M13 26q3.5-3 7 0t7 0',b:'M10.5 11.5l5 2M29.5 11.5l-5 2'},
+  sedih:{m:'M14 27.5q6-5 12 0',b:'M11 13.5l5-1.5M29 13.5l-5-1.5'},
+  tertekan:{m:'M14 28.5q6-6 12 0',b:'M10.5 12.5l5-3M29.5 12.5l-5-3'}
+};
+function Face(props){
+  var f=FACES[props.id]||FACES.biasa,size=props.size||40;
+  return h('svg',{className:'face',viewBox:'0 0 40 40',width:size,height:size,'aria-hidden':'true',focusable:'false',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},
+    h('circle',{cx:20,cy:20,r:17}),
+    h('circle',{cx:14.5,cy:18,r:1.5,fill:'currentColor',stroke:'none'}),
+    h('circle',{cx:25.5,cy:18,r:1.5,fill:'currentColor',stroke:'none'}),
+    h('path',{d:f.m}),
+    f.b?h('path',{d:f.b}):null);
+}
+function BrandMark(props){
+  var s=props.size||44;
+  return h('svg',{viewBox:'0 0 48 48',width:s,height:s,'aria-hidden':'true',focusable:'false'},
+    h('rect',{x:0,y:0,width:48,height:48,rx:14,fill:'var(--primary)'}),
+    h('circle',{cx:24,cy:18.5,r:5.2,fill:'var(--on-primary)'}),
+    h('path',{d:'M11.5 28.5a12.5 12.5 0 0 0 25 0',fill:'none',stroke:'var(--on-primary)',strokeWidth:3.2,strokeLinecap:'round'}));
+}
+
+/* ---------- shared pieces ---------- */
+function Notice(props){
+  return div({className:'notice '+(props.kind||''),role:props.role||null},
+    h(Icon,{name:props.icon||'info'}),
+    div({className:'stack',style:{gap:'6px',minWidth:0}},props.children));
+}
+function SimBanner(){
+  return h(Notice,{kind:'notice-sim',icon:'alert'},
+    span({className:'tag tag-sim',style:{alignSelf:'flex-start'}},SIM_LABEL),
+    para(null,SIM_NOTE));
+}
+function DraftTag(){return span({className:'tag'},'Draf · belum ditelaah ahli');}
+function PageHead(props){
+  return div({className:'page-title'},
+    props.onBack?btn({type:'button',className:'back',onClick:props.onBack},h(Icon,{name:'back'}),props.backLabel||'Kembali'):null,
+    props.eyebrow?span({className:'eyebrow'},props.eyebrow):null,
+    h1({id:'screen-title',tabIndex:-1},props.title),
+    props.lead?para({className:'muted',style:{maxWidth:'60ch'}},props.lead):null);
+}
+function SectionTitle(props){return h2({style:{fontSize:'1.25rem',marginBottom:'var(--s-3)'}},props.children);}
+
+/* ---------- shell ---------- */
+var NAV=[{id:'home',label:'Beranda',icon:'home'},{id:'screening',label:'Skrining',icon:'screen'},{id:'education',label:'Edukasi',icon:'book'},
+         {id:'monitoring',label:'Pemantauan',icon:'chart'},{id:'profile',label:'Profil',icon:'user'}];
+function activeTabFor(name){
+  if(name==='module')return 'education';
+  if(name==='relax'||name==='mood')return 'home';
+  if(name==='privacy')return 'profile';
+  return NAV.some(function(n){return n.id===name;})?name:null;
+}
+function NavButtons(props){
+  return NAV.map(function(n){
+    return btn({key:n.id,type:'button',className:'navbtn','aria-current':props.active===n.id?'page':null,onClick:function(){props.ctx.tab(n.id);}},
+      h(Icon,{name:n.icon,size:22}),span(null,n.label));
+  });
+}
+function Shell(props){
+  var ctx=props.ctx,active=activeTabFor(props.route.name);
+  var onHelp=props.route.name==='help';
+  return div({className:'app'},
+    aside({className:'rail'},
+      div({className:'brand'},h(BrandMark,{size:38}),span(null,BRAND.name)),
+      nav({className:'rail-nav','aria-label':'Navigasi utama'},h(NavButtons,{ctx:ctx,active:active})),
+      onHelp?null:btn({type:'button',className:'helppill',onClick:function(){ctx.go('help');}},h(Icon,{name:'help',size:20}),'Butuh Bantuan?'),
+      para({className:'hint'},'Prototipe demo '+BRAND.version+'. Bukan alat diagnosis dan bukan layanan darurat.')),
+    div({className:'col'},
+      header({className:'topbar'},
+        div({className:'demo-strip'},'Mode demo · data fiktif · tidak dikirim ke server'),
+        div({className:'topbar-row'},
+          div({className:'brand'},h(BrandMark,{size:32}),span(null,BRAND.name)),
+          onHelp?span({className:'hint'},'Informasi bantuan'):btn({type:'button',className:'helppill',onClick:function(){ctx.go('help');}},h(Icon,{name:'help',size:20}),'Butuh Bantuan?'))),
+      main({id:'main'},props.children)),
+    nav({className:'bottomnav','aria-label':'Navigasi utama'},h(NavButtons,{ctx:ctx,active:active})));
+}
+
+/* ---------- welcome / privacy / exit ---------- */
+function Welcome(props){
+  var ctx=props.ctx;
+  return div({className:'plain stack-lg'},
+    div({className:'stack'},
+      div({className:'hero-mark'},h(BrandMark,{size:56}),span({className:'tag tag-sim'},'Prototipe demo')),
+      h1({id:'screen-title',tabIndex:-1,className:'hero-title'},BRAND.name),
+      para({style:{fontWeight:600,color:'var(--fg2)'}},BRAND.full),
+      para({className:'tagline'},BRAND.tagline)),
+    para({style:{fontSize:'1.05rem'}},'Selamat datang, Bunda. Di sini Bunda dapat mempelajari kesehatan mental selama kehamilan, mengenali perasaan, mencoba latihan relaksasi, dan menemukan informasi untuk memperoleh dukungan. Bunda boleh memilih fitur yang paling sesuai dengan kebutuhan saat ini.'),
+    div({className:'facts'},
+      div({className:'fact'},div({className:'fact-ic'},h(Icon,{name:'screen'})),div(null,h3(null,'Skrining bukan diagnosis'),para({className:'hint',style:{color:'var(--fg2)'}},'Aplikasi ini tidak menghitung skor. Penilaian hasil skrining hanya dilakukan oleh Bidan, Dokter, atau Psikolog Klinis.'))),
+      div({className:'fact'},div({className:'fact-ic'},h(Icon,{name:'lock'})),div(null,h3(null,'Data demo saja'),para({className:'hint',style:{color:'var(--fg2)'}},'Apa pun yang Bunda isi hanya tersimpan sementara di halaman ini dan hilang saat halaman ditutup. Tidak ada akun, server, atau petugas yang memantau. Mohon tidak memasukkan data pribadi atau data kesehatan yang nyata.'))),
+      div({className:'fact'},div({className:'fact-ic'},h(Icon,{name:'help'})),div(null,h3(null,'Bantuan selalu tersedia'),para({className:'hint',style:{color:'var(--fg2)'}},'Tombol “Butuh Bantuan?” ada di setiap layar. Aplikasi ini bukan layanan darurat.')))),
+    h(Notice,{kind:'notice-soft',icon:'info'},para(null,'Tombol di bawah hanya melanjutkan ke demonstrasi alur. Ini bukan persetujuan penelitian dan bukan persetujuan hukum untuk pemrosesan data pada layanan nyata.')),
+    div({className:'stack'},
+      btn({type:'button',className:'btn btn-primary btn-block',onClick:ctx.consent},'Saya memahami dan melanjutkan'),
+      btn({type:'button',className:'btn btn-outline btn-block',onClick:function(){ctx.go('privacy');}},'Baca informasi privasi'),
+      btn({type:'button',className:'btn btn-text',onClick:function(){ctx.go('exit');}},'Keluar')));
+}
+function Exit(props){
+  var ctx=props.ctx;
+  return div({className:'plain stack-lg'},
+    h(BrandMark,{size:48}),
+    h1({id:'screen-title',tabIndex:-1},'Terima kasih, Bunda.'),
+    para(null,'Tidak ada data yang disimpan. Bunda boleh menutup halaman ini kapan saja.'),
+    h(Notice,{kind:'notice-soft',icon:'help'},para(null,'Bila Bunda ingin berbicara tentang perasaan Bunda, hubungi bidan atau tenaga kesehatan yang Bunda percaya.')),
+    btn({type:'button',className:'btn btn-outline',onClick:function(){ctx.tab('welcome');}},'Kembali ke layar sambutan'));
+}
+function Privacy(props){
+  var ctx=props.ctx;
+  var items=[
+   ['Apa yang terjadi pada isian Bunda','Catatan perasaan, jawaban skrining, dan aktivitas disimpan hanya di memori halaman ini. Semuanya hilang saat halaman ditutup atau dimuat ulang. Tidak ada yang dikirim ke server atau pihak lain.'],
+   ['Mohon tidak memasukkan data nyata','Prototipe ini tidak aman untuk data klinis atau data pribadi yang sensitif. Gunakan contoh atau isian fiktif saja.'],
+   ['Yang belum ada di demo ini','Akun dan autentikasi, kontrol akses berbasis peran, enkripsi, sinkronisasi server, pencatatan akses, kebijakan masa simpan, dan tata kelola data produksi belum diterapkan.'],
+   ['Persetujuan','Tombol “Saya memahami dan melanjutkan” hanya melanjutkan demonstrasi. Persetujuan layanan dan persetujuan penelitian harus dipisahkan dan dirancang secara resmi sebelum penggunaan nyata.'],
+   ['Sebelum digunakan nyata','Dokumen rancangan mensyaratkan minimisasi data, tujuan penggunaan yang jelas, masa simpan, kontrol akses, penanganan insiden, telaah komite etik untuk penelitian, serta penelaahan hukum perlindungan data pribadi di Indonesia. Halaman ini bukan pendapat hukum.']
+  ];
+  return div({className:ctx.consented?'stack-lg':'plain stack-lg'},
+    h(PageHead,{title:'Informasi privasi',eyebrow:'Prototipe demo',onBack:ctx.back,lead:'Penjelasan singkat tentang apa yang dilakukan dan tidak dilakukan prototipe ini terhadap isian Bunda.'}),
+    div({className:'card stack'},items.map(function(it,i){return div({key:i,className:'stack',style:{gap:'4px'}},h3(null,it[0]),para({style:{color:'var(--fg2)'}},it[1]));})),
+    btn({type:'button',className:'btn btn-outline',onClick:ctx.back},'Kembali'));
+}
+
+/* ---------- home ---------- */
+function Home(props){
+  var ctx=props.ctx,d=ctx.data;
+  var done=Object.keys(d.completed).length;
+  var relax=d.activity.filter(function(a){return a.type==='relax';}).length;
+  return div({className:'stack-lg'},
+    div({className:'greet'},
+      span({className:'eyebrow'},'Beranda'),
+      h1({id:'screen-title',tabIndex:-1},'Halo, Bunda.'),
+      para({className:'muted'},BRAND.tagline)),
+    div({className:'band mood-hero'},
+      div({className:'stack',style:{gap:'6px'}},
+        h2({style:{fontSize:'1.35rem'}},'Bagaimana perasaan Bunda hari ini?'),
+        para({style:{color:'var(--fg2)'}},'Catatan ini hanya untuk refleksi pribadi, bukan penilaian atau diagnosis.'),
+        div(null,btn({type:'button',className:'btn btn-primary',onClick:function(){ctx.go('mood');}},h(Icon,{name:'pencil',size:20}),'Catat Perasaan'))),
+      div({'aria-hidden':'true',style:{color:'var(--primary)'}},h(Face,{id:'baik',size:72}))),
+    div({className:'grid2'},
+      btn({type:'button',className:'tile tile-main',onClick:function(){ctx.tab('screening');}},
+        div({className:'tile-ic'},h(Icon,{name:'screen',size:26})),
+        div({className:'stack',style:{gap:'2px'}},h3(null,'Mulai Skrining'),small(null,'Isi lembar skrining EPDS. Tanpa skor.'))),
+      btn({type:'button',className:'tile',onClick:function(){ctx.tab('education');}},
+        div({className:'tile-ic'},h(Icon,{name:'book',size:24})),h3(null,'Edukasi Bunda'),small(null,done+' dari '+MODULES.length+' modul ditandai selesai')),
+      btn({type:'button',className:'tile',onClick:function(){ctx.go('relax');}},
+        div({className:'tile-ic'},h(Icon,{name:'breath',size:24})),h3(null,'Latihan Relaksasi'),small(null,'Pernapasan nyaman, sekitar 2 menit')),
+      btn({type:'button',className:'tile tile-help',style:{gridColumn:'1/-1',minHeight:0,flexDirection:'row',alignItems:'center'},onClick:function(){ctx.go('help');}},
+        div({className:'tile-ic'},h(Icon,{name:'help',size:24})),
+        div({className:'stack',style:{gap:'2px'}},h3(null,'Butuh Bantuan?'),small(null,'Cara menghubungi bidan atau tenaga kesehatan, dan langkah bila dalam bahaya.')))),
+    div(null,
+      SectionTitle({children:'Aktivitas demo Bunda'}),
+      div({className:'stats'},
+        div({className:'stat'},strong(null,String(done)),span(null,'modul selesai')),
+        div({className:'stat'},strong(null,String(d.moods.length)),span(null,'catatan perasaan')),
+        div({className:'stat'},strong(null,String(relax)),span(null,'latihan napas')),
+        div({className:'stat'},strong(null,String(d.screening.runs)),span(null,'skrining diisi'))),
+      para({className:'hint',style:{marginTop:'var(--s-3)'}},'Angka ini hanya menghitung interaksi Bunda di sesi demo ini. Ini bukan pemantauan klinis dan bukan status kesehatan.')));
+}
+
+/* ---------- screening ---------- */
+function Screening(props){
+  var ctx=props.ctx,s=ctx.data.screening,I=EPDS,N=I.items.length;
+  function patch(p){ctx.setData(function(d){return Object.assign({},d,{screening:Object.assign({},d.screening,p)});});}
+  useEffect(function(){
+    try{window.scrollTo(0,0);}catch(e){}
+    var t=document.getElementById('screen-title');
+    if(t&&t.focus){try{t.focus({preventScroll:true});}catch(e){}}
+  },[s.step,s.idx]);
+  function isSafety(item,v){return item.id===I.safetyItem&&v===I.safetyOption;}
+  function answer(item,v){
+    ctx.setData(function(d){
+      var a=Object.assign({},d.screening.answers);a[item.id]=v;
+      var p={answers:a,error:null};
+      if(isSafety(item,v))p.step='safety'; /* hentikan alur seketika */
+      return Object.assign({},d,{screening:Object.assign({},d.screening,p)});
+    });
+  }
+  function next(){
+    var item=I.items[s.idx],v=s.answers[item.id];
+    if(v===undefined){patch({error:'Mohon pilih salah satu jawaban sebelum melanjutkan.'});return;}
+    if(isSafety(item,v)){patch({step:'safety'});return;}
+    if(s.idx<N-1){patch({idx:s.idx+1,error:null});return;}
+    ctx.setData(function(d){
+      return Object.assign({},d,{
+        screening:Object.assign({},d.screening,{step:'result',error:null,runs:d.screening.runs+1}),
+        activity:[{id:uid('act'),type:'screen',label:'Lembar skrining EPDS diisi (tanpa skor)',at:Date.now()}].concat(d.activity)});
+    });
+  }
+  function prev(){if(s.idx>0)patch({idx:s.idx-1,error:null});else patch({step:'about',error:null});}
+  function restart(){patch({step:'intro',idx:0,answers:{},error:null});}
+
+  if(s.step==='safety'){
+    return div({className:'stack-lg'},
+      div({className:'band-peach stack',role:'alert',style:{border:'2px solid var(--alert)'}},
+        div({className:'row'},span({className:'tag tag-sim'},'Darurat')),
+        h1({id:'screen-title',tabIndex:-1,style:{fontSize:'1.5rem'}},'Peringatan keselamatan'),
+        para({style:{fontSize:'1.1rem',fontWeight:600}},'Keselamatan Bunda adalah prioritas. Segera minta pendamping dan pergi ke IGD Rumah Sakit terdekat, atau hubungi layanan darurat 119/112.')),
+      div({className:'stack'},
+        btn({type:'button',className:'btn btn-primary btn-block',onClick:function(){ctx.go('help');}},h(Icon,{name:'help',size:20}),'Buka informasi bantuan'),
+        btn({type:'button',className:'btn btn-outline btn-block',onClick:function(){patch({step:'q',idx:N-1,error:null});}},'Tutup peringatan')));
+  }
+  if(s.step==='intro'){
+    return div({className:'stack-lg'},
+      h(PageHead,{eyebrow:'Skrining',title:'Skrining kesehatan mental',lead:'Sepuluh pertanyaan tentang perasaan Bunda.'}),
+      h(SimBanner),
+      div({className:'card stack'},
+        para(null,'Skrining ini dirancang untuk K1 (Kunjungan Pertama), K5 (Kunjungan Kelima), dan KF3 (Nifas Ketiga). Ingat-ingat kondisi Bunda selama 7 hari terakhir.'),
+        ul({className:'stack',style:{gap:'6px'}},li(null,'Ada 10 pertanyaan dengan 4 pilihan jawaban.'),li(null,'Tidak ada jawaban benar atau salah.'),li(null,'Jawaban Bunda dicatat pada lembar yang dapat ditunjukkan kepada tenaga kesehatan.'))),
+      h(Notice,{kind:'notice-soft',icon:'help'},para(null,'Jika Bunda merasa tidak aman atau memiliki pikiran untuk menyakiti diri, segera cari bantuan langsung.'),
+        btn({type:'button',className:'btn btn-outline btn-sm',style:{alignSelf:'flex-start'},onClick:function(){ctx.go('help');}},'Buka informasi bantuan')),
+      btn({type:'button',className:'btn btn-primary btn-block',onClick:function(){patch({step:'about'});}},'Lanjut'));
+  }
+  if(s.step==='about'){
+    return div({className:'stack-lg'},
+      h(PageHead,{eyebrow:'Skrining · Penjelasan',title:'Sebelum mulai',onBack:function(){patch({step:'intro'});}}),
+      h(SimBanner),
+      div({className:'card stack'},
+        h3(null,'Cara mengisi'),
+        para({style:{color:'var(--fg2)'}},'Pilih jawaban yang paling mirip dengan perasaan Bunda selama 7 hari terakhir, tidak hanya perasaan hari ini.'),
+        h3(null,'Batasan'),
+        ul({className:'stack',style:{gap:'6px',color:'var(--fg2)'}},
+          li(null,'Aplikasi ini tidak menghitung skor dan tidak menampilkan hasil penilaian.'),
+          li(null,'Sesuai panduan, penilaian hasil skrining hanya bisa dilakukan oleh Bidan, Dokter, atau Psikolog Klinis.'),
+          li(null,'Tidak ada petugas yang menerima atau memantau jawaban Bunda di prototipe demo ini.'))),
+      div({className:'row'},
+        btn({type:'button',className:'btn btn-outline',onClick:function(){patch({step:'intro'});}},'Kembali'),
+        btn({type:'button',className:'btn btn-primary',style:{flex:1},onClick:function(){patch({step:'q',idx:0,error:null});}},'Mulai')));
+  }
+  if(s.step==='q'){
+    var item=I.items[s.idx],pct=Math.round((s.idx+1)/N*100);
+    var last=s.idx===N-1;
+    return div({className:'stack-lg'},
+      div({className:'stack',style:{gap:'10px'}},
+        span({className:'tag tag-sim',style:{alignSelf:'flex-start'}},SIM_LABEL),
+        div({className:'row',style:{justifyContent:'space-between'}},
+          span({className:'eyebrow'},'Pertanyaan '+(s.idx+1)+' dari '+N),
+          span({className:'hint'},pct+'%')),
+        div({className:'progress',role:'progressbar','aria-label':'Progres pengisian','aria-valuemin':0,'aria-valuemax':100,'aria-valuenow':pct},h('i',{style:{width:pct+'%'}}))),
+      h1({id:'screen-title',tabIndex:-1,style:{position:'absolute',width:'1px',height:'1px',overflow:'hidden',clip:'rect(0,0,0,0)'}},'Pertanyaan '+(s.idx+1)+' dari '+N),
+      div({className:'visually-hidden',role:'status','aria-live':'polite'},'Pertanyaan '+(s.idx+1)+' dari '+N),
+      form({className:'stack-lg',noValidate:true,onSubmit:function(e){e.preventDefault();next();}},
+        fieldset({'aria-describedby':s.error?'q-err':null},
+          legend(null,(s.idx+1)+'. '+item.text),
+          div({className:'opts'},item.opts.map(function(label,i){
+            var L=LETTERS[i];
+            return lab({key:item.id+L,className:'opt'},
+              inp({type:'radio',name:'q-'+item.id,value:L,checked:s.answers[item.id]===L,onChange:function(){answer(item,L);}}),
+              span({className:'opt-dot'},h(Icon,{name:'check',size:14})),
+              span(null,L+'. '+label));
+          }))),
+        s.error?div({id:'q-err',className:'err',role:'alert'},h(Icon,{name:'alert',size:20}),span(null,s.error)):null,
+        div({className:'row'},
+          btn({type:'button',className:'btn btn-outline',onClick:prev},'Kembali'),
+          btn({type:'submit',className:'btn btn-primary',style:{flex:1}},last?'Selesai':'Lanjut'))),
+      para({className:'hint'},'Jika Bunda merasa tidak aman, ',
+        btn({type:'button',className:'btn-text',style:{padding:'0 2px',minHeight:'auto',display:'inline',font:'inherit'},onClick:function(){ctx.go('help');}},'buka informasi bantuan'),'.'));
+  }
+  /* result: tanpa skor */
+  return div({className:'stack-lg'},
+    h(PageHead,{eyebrow:'Skrining · Selesai',title:'Jawaban Bunda Tercatat'}),
+    h(SimBanner),
+    div({className:'card stack'},
+      para(null,'Terima kasih Bunda. Sesuai panduan, penilaian hasil skrining hanya bisa dilakukan oleh Bidan, Dokter, atau Psikolog Klinis.')),
+    div({className:'card stack'},
+      h3(null,'Lembar jawaban Bunda'),
+      ol({className:'stack',style:{gap:'10px'}},I.items.map(function(it){
+        var v=s.answers[it.id],i=LETTERS.indexOf(v);
+        return li({key:it.id},para({style:{color:'var(--fg2)'}},it.text),para({style:{fontWeight:600}},i>=0?v+'. '+it.opts[i]:'—'));
+      }))),
+    div({className:'stack no-print'},
+      btn({type:'button',className:'btn btn-primary btn-block',onClick:function(){try{window.print();}catch(e){}}},'Tunjukkan Lembar Ini ke Tenaga Kesehatan'),
+      btn({type:'button',className:'btn btn-outline btn-block',onClick:function(){ctx.go('help');}},h(Icon,{name:'help',size:20}),'Buka informasi bantuan'),
+      btn({type:'button',className:'btn btn-text',onClick:function(){ctx.tab('home');}},'Kembali ke Beranda'),
+      btn({type:'button',className:'btn btn-text',onClick:restart},'Isi ulang')));
+}
+
+/* ---------- education ---------- */
+function Education(props){
+  var ctx=props.ctx,done=ctx.data.completed;
+  return div({className:'stack-lg'},
+    h(PageHead,{eyebrow:'Edukasi',title:'Edukasi Bunda',lead:'Materi ringkas tentang kesehatan mental selama kehamilan. Bunda bisa membaca tanpa harus melakukan skrining.'}),
+    h(Notice,{kind:'notice-sim',icon:'alert'},para(null,strong(null,'Konten draf. '),'Materi di prototipe ini belum ditelaah ahli kebidanan atau kesehatan mental dan belum divalidasi klinis. Telaah ahli diperlukan sebelum digunakan nyata.')),
+    ul({className:'list'},MODULES.map(function(m){
+      var ok=!!done[m.id];
+      return li({key:m.id},btn({type:'button',className:'mod',onClick:function(){ctx.go('module',{id:m.id});}},
+        div(null,h3(null,m.title),para(null,m.summary)),
+        div({className:'mod-side'},
+          ok?span({className:'tag tag-ok'},'Selesai ✓'):span({className:'tag'},'Draf'),
+          h(Icon,{name:'chev',size:20}))));
+    })));
+}
+function Module(props){
+  var ctx=props.ctx,m=MODULE_BY_ID[props.id];
+  var ok=!!ctx.data.completed[m.id];
+  function toggle(){
+    ctx.setData(function(d){
+      var c=Object.assign({},d.completed),act=d.activity;
+      if(c[m.id]){delete c[m.id];}
+      else{c[m.id]=Date.now();act=[{id:uid('act'),type:'edu',label:'Modul ditandai selesai: '+m.title,at:Date.now()}].concat(act);}
+      return Object.assign({},d,{completed:c,activity:act});
+    });
+  }
+  return div({className:'stack-lg'},
+    h(PageHead,{eyebrow:'Modul edukasi',title:m.title,onBack:ctx.back,backLabel:'Daftar materi'}),
+    div({className:'row'},h(DraftTag),ok?span({className:'tag tag-ok'},'Selesai ✓'):null),
+    para({style:{fontSize:'1.1rem',color:'var(--fg2)',maxWidth:'60ch'}},m.summary),
+    div({className:'prose'},m.body.map(function(t,i){return para({key:i},t);})),
+    div({className:'card stack'},h3(null,'Pesan utama'),ul({className:'stack',style:{gap:'6px'}},m.points.map(function(t,i){return li({key:i},t);}))),
+    div({className:'band-peach stack'},span({className:'eyebrow'},'Refleksi atau aktivitas (opsional)'),para(null,m.activity)),
+    h(Notice,{kind:'notice-soft',icon:'help'},strong(null,'Kapan perlu berkonsultasi'),para(null,m.consult),
+      m.helpLink?btn({type:'button',className:'btn btn-outline btn-sm',style:{alignSelf:'flex-start'},onClick:function(){ctx.go('help');}},'Buka informasi bantuan'):null),
+    div({className:'card-flat stack',style:{gap:'6px'}},
+      span({className:'eyebrow'},'Sumber / rujukan'),para({style:{fontSize:'.92rem',color:'var(--fg2)'}},m.source),
+      para({style:{fontSize:'.92rem',color:'var(--fg2)'}},'Tanggal tinjauan: belum ditinjau.')),
+    div({className:'stack'},
+      btn({type:'button',className:'btn btn-block '+(ok?'btn-outline':'btn-primary'),'aria-pressed':ok,onClick:toggle},ok?'Batalkan tanda selesai':'Tandai selesai'),
+      ok?para({className:'hint',role:'status'},'Modul ini ditandai selesai di sesi demo ini.'):null,
+      btn({type:'button',className:'btn btn-text',onClick:ctx.back},'Kembali ke daftar materi')));
+}
+
+/* ---------- relaxation ---------- */
+function Relax(props){
+  var ctx=props.ctx;
+  var TOTAL=120000,CYCLE=10000,INH=4000;
+  var st=useState('idle'),status=st[0],setStatus=st[1];
+  var el=useState(0),elapsed=el[0],setElapsed=el[1];
+  var last=useRef(0);
+  var logged=useRef(false);
+  var reduce=useRef(false);
+  try{reduce.current=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+  useEffect(function(){
+    if(status!=='running')return undefined;
+    last.current=performance.now();
+    var id=setInterval(function(){
+      var now=performance.now(),dt=now-last.current;last.current=now;
+      setElapsed(function(e){return Math.min(TOTAL,e+dt);});
+    },100);
+    return function(){clearInterval(id);};
+  },[status]);
+  useEffect(function(){
+    if(status==='running'&&elapsed>=TOTAL){setStatus('done');}
+  },[elapsed,status]);
+  useEffect(function(){
+    if(status==='done'&&!logged.current&&elapsed>=1000){
+      logged.current=true;
+      ctx.log('relax','Latihan pernapasan ('+Math.round(elapsed/1000)+' dtk)');
+    }
+  },[status]);
+  function ease(x){return x*x*(3-2*x);}
+  var t=elapsed%CYCLE,inhale=t<INH;
+  var phaseLeft=inhale?Math.ceil((INH-t)/1000):Math.ceil((CYCLE-t)/1000);
+  var scale=inhale?0.64+0.36*ease(t/INH):1-0.36*ease((t-INH)/(CYCLE-INH));
+  if(status==='idle')scale=0.64;
+  if(reduce.current)scale=0.85;
+  var label=status==='idle'?'Siap':status==='paused'?'Dijeda':status==='done'?'Selesai':(inhale?'Tarik napas perlahan':'Hembuskan perlahan');
+  function mmss(ms){var s=Math.floor(ms/1000);return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+  var pct=Math.round(elapsed/TOTAL*100);
+  function start(){setElapsed(0);logged.current=false;setStatus('running');}
+  return div({className:'stack-lg'},
+    h(PageHead,{eyebrow:'Relaksasi',title:'Pernapasan nyaman',onBack:ctx.back,backLabel:'Kembali',lead:'Sekitar 2 menit. Duduk atau ambil posisi yang nyaman, lemaskan bahu, lalu bernapas perlahan tanpa memaksakan kedalaman napas.'}),
+    h(Notice,{kind:'notice-sim',icon:'alert',role:'note'},para(null,strong(null,BREATH_NOTE)),para(null,'Bunda boleh berhenti kapan saja. Latihan ini tidak meminta Bunda menahan napas.')),
+    div({className:'card breath'},
+      div({className:'breath-stage'},
+        div({className:'breath-ring','aria-hidden':'true'}),
+        div({className:'breath-orb','aria-hidden':'true',style:{transform:'scale('+scale.toFixed(3)+')'}}),
+        div({className:'breath-txt'},
+          b2(label),
+          status==='running'?span({'aria-hidden':'true'},String(phaseLeft)):null)),
+      div({className:'stack',style:{width:'100%',gap:'6px'}},
+        div({className:'row',style:{justifyContent:'space-between'}},span({className:'hint'},'Kemajuan sesi'),span({className:'hint',style:{fontVariantNumeric:'tabular-nums'}},mmss(elapsed)+' / '+mmss(TOTAL))),
+        div({className:'progress',role:'progressbar','aria-label':'Kemajuan sesi latihan','aria-valuemin':0,'aria-valuemax':100,'aria-valuenow':pct},h('i',{style:{width:pct+'%'}}))),
+      div({className:'visually-hidden',role:'status','aria-live':'polite'},status==='running'?'Latihan berjalan':status==='paused'?'Latihan dijeda':status==='done'?'Latihan selesai':''),
+      status==='done'
+        ?div({className:'stack',style:{width:'100%'}},
+            para({style:{textAlign:'center',fontWeight:600}},'Terima kasih sudah meluangkan waktu, Bunda.'),
+            btn({type:'button',className:'btn btn-primary btn-block',onClick:start},'Ulangi latihan'),
+            btn({type:'button',className:'btn btn-outline btn-block',onClick:function(){ctx.tab('home');}},'Kembali ke Beranda'))
+        :div({className:'row',style:{width:'100%'}},
+            status==='idle'?btn({type:'button',className:'btn btn-primary',style:{flex:1},onClick:start},'Mulai'):null,
+            status==='running'?btn({type:'button',className:'btn btn-primary',style:{flex:1},onClick:function(){setStatus('paused');}},'Jeda'):null,
+            status==='paused'?btn({type:'button',className:'btn btn-primary',style:{flex:1},onClick:function(){setStatus('running');}},'Lanjutkan'):null,
+            status!=='idle'?btn({type:'button',className:'btn btn-outline',style:{flex:1},onClick:function(){setStatus('done');}},'Selesai'):null)),
+    div({className:'card-flat stack',style:{gap:'6px'}},
+      para({className:'hint',style:{color:'var(--fg2)'}},'Irama contoh: tarik napas 4 detik, hembuskan 6 detik. Angka ini hanya untuk demonstrasi antarmuka dan perlu ditelaah ahli sebelum digunakan nyata. Latihan ini bukan terapi atau pengobatan.'),
+      para({className:'hint',style:{color:'var(--fg2)'}},'Bila bernapas perlahan terasa tidak nyaman, Bunda dapat berhenti, lalu melihat sekitar dan menyebutkan beberapa benda yang tampak.')));
+  function b2(txt){return strong(null,txt);}
+}
+
+/* ---------- mood ---------- */
+function MoodHistory(props){
+  var ctx=props.ctx,list=ctx.data.moods;
+  var cs=useState(null),confirmId=cs[0],setConfirm=cs[1];
+  if(!list.length)return div({className:'empty'},h(Face,{id:'biasa',size:44}),para(null,'Belum ada catatan perasaan pada sesi ini.'),props.emptyAction||null);
+  return div(null,list.map(function(m){
+    return div({key:m.id,className:'entry'},
+      h(Face,{id:m.mood,size:40}),
+      div({style:{minWidth:0}},
+        div({className:'row',style:{gap:'8px',justifyContent:'space-between'}},strong(null,moodLabel(m.mood)),span({className:'hint'},fmtDate(m.at))),
+        m.sample?span({className:'tag',style:{marginTop:'4px'}},'Contoh fiktif'):null,
+        m.note?para({style:{marginTop:'4px',color:'var(--fg2)',overflowWrap:'anywhere'}},m.note):null,
+        m.needs&&m.needs.length?div({className:'chips',style:{marginTop:'6px'}},m.needs.map(function(n){return span({key:n,className:'chip'},needLabel(n));})):null,
+        props.deletable===false?null:(confirmId===m.id
+          ?div({className:'entry-actions',role:'group','aria-label':'Konfirmasi hapus'},
+              span({className:'hint',style:{alignSelf:'center'}},'Hapus catatan ini?'),
+              btn({type:'button',className:'btn btn-sm btn-primary',onClick:function(){setConfirm(null);ctx.deleteMood(m.id);}},'Ya, hapus'),
+              btn({type:'button',className:'btn btn-sm btn-outline',onClick:function(){setConfirm(null);}},'Batal'))
+          :div({className:'entry-actions'},btn({type:'button',className:'btn btn-sm btn-outline','aria-label':'Hapus catatan perasaan '+moodLabel(m.mood)+' pada '+fmtDate(m.at),onClick:function(){setConfirm(m.id);}},h(Icon,{name:'trash',size:18}),'Hapus')))));
+  }));
+}
+function Mood(props){
+  var ctx=props.ctx;
+  var a=useState(''),mood=a[0],setMood=a[1];
+  var b=useState(''),note=b[0],setNote=b[1];
+  var c=useState([]),needs=c[0],setNeeds=c[1];
+  var e=useState(''),err=e[0],setErr=e[1];
+  var f=useState(null),saved=f[0],setSaved=f[1];
+  function reset(){setMood('');setNote('');setNeeds([]);setErr('');}
+  function toggleNeed(id){setNeeds(function(n){return n.indexOf(id)>=0?n.filter(function(x){return x!==id;}):n.concat(id);});}
+  function submit(ev){
+    ev.preventDefault();
+    if(!mood){setErr('Pilih salah satu perasaan terlebih dahulu.');setSaved(null);return;}
+    var entry={id:uid('mood'),mood:mood,note:note.trim(),needs:needs,at:Date.now()};
+    ctx.setData(function(d){return Object.assign({},d,{moods:[entry].concat(d.moods),activity:[{id:uid('act'),type:'mood',label:'Catatan perasaan: '+moodLabel(mood),at:entry.at}].concat(d.activity)});});
+    setSaved(entry);reset();
+  }
+  var gentle=saved&&(['cemas','sedih','tertekan'].indexOf(saved.mood)>=0||saved.needs.indexOf('bidan')>=0);
+  var heavy=saved&&saved.mood==='tertekan';
+  return div({className:'stack-lg'},
+    h(PageHead,{eyebrow:'Catatan perasaan',title:'Bagaimana perasaan Bunda hari ini?',onBack:ctx.back,lead:'Opsional dan hanya untuk refleksi pribadi. Pilihan perasaan bukan diagnosis dan tidak dihitung menjadi skor.'}),
+    saved?div({className:'band stack',role:'status'},
+      strong(null,'Catatan tersimpan di sesi demo ini.'),
+      gentle?para(null,heavy?'Terima kasih sudah jujur pada perasaan Bunda. Bunda tidak harus menghadapinya sendirian. Bila terasa sangat berat, hubungi orang yang Bunda percaya atau tenaga kesehatan.':'Terima kasih sudah mencatat, Bunda. Bila perasaan ini terus mengganggu, berbicara dengan bidan atau tenaga kesehatan bisa membantu.'):null,
+      gentle?div(null,btn({type:'button',className:'btn btn-outline btn-sm',onClick:function(){ctx.go('help');}},'Buka informasi bantuan')):null):null,
+    form({className:'card stack-lg',noValidate:true,onSubmit:submit},
+      fieldset({'aria-describedby':err?'mood-err':null},
+        legend(null,'Perasaan Bunda saat ini'),
+        div({className:'moods'},MOODS.map(function(m){
+          return lab({key:m.id,className:'mood-opt'},
+            inp({type:'radio',name:'mood',value:m.id,checked:mood===m.id,onChange:function(){setMood(m.id);setErr('');}}),
+            div({className:'mood-card'},span({className:'tick'},h(Icon,{name:'check',size:18})),h(Face,{id:m.id,size:40}),span(null,m.label)));
+        })),
+        err?div({id:'mood-err',className:'err',role:'alert',style:{marginTop:'10px'}},h(Icon,{name:'alert',size:20}),span(null,err)):null),
+      div(null,
+        lab({className:'field-label',htmlFor:'mood-note'},'Catatan singkat (opsional)'),
+        ta({id:'mood-note',maxLength:280,value:note,placeholder:'Apa yang paling memengaruhi perasaan Bunda? Mohon tidak menulis data pribadi nyata.',onChange:function(ev){setNote(ev.target.value);}}),
+        para({className:'hint',style:{marginTop:'4px'}},note.length+' / 280 karakter')),
+      fieldset(null,
+        legend({style:{fontSize:'1rem'}},'Dukungan yang Bunda butuhkan (opsional)'),
+        div({className:'chips'},NEEDS.map(function(n){
+          return lab({key:n.id,className:'chk'},
+            inp({type:'checkbox',checked:needs.indexOf(n.id)>=0,onChange:function(){toggleNeed(n.id);}}),
+            span({className:'mark'},h(Icon,{name:'check',size:12})),span(null,n.label));
+        }))),
+      div({className:'row'},
+        btn({type:'button',className:'btn btn-outline',onClick:function(){reset();ctx.back();}},'Batal'),
+        btn({type:'submit',className:'btn btn-primary',style:{flex:1}},'Simpan catatan'))),
+    div(null,
+      SectionTitle({children:'Riwayat sesi ini'}),
+      div({className:'card-flat'},h(MoodHistory,{ctx:ctx})),
+      para({className:'hint',style:{marginTop:'var(--s-3)'}},'Catatan hanya ada di sesi demo ini dan hilang saat halaman ditutup. Tidak dikirim ke mana pun.')));
+}
+
+/* ---------- monitoring ---------- */
+var ACT_ICON={edu:'book',relax:'breath',mood:'pencil',screen:'screen'};
+function Monitoring(props){
+  var ctx=props.ctx,d=ctx.data;
+  var done=Object.keys(d.completed).length;
+  var relax=d.activity.filter(function(a){return a.type==='relax';}).length;
+  var empty=!d.moods.length&&!d.activity.length&&!done;
+  var hasSample=d.moods.some(function(m){return m.sample;});
+  var counts={};MOODS.forEach(function(m){counts[m.id]=0;});d.moods.forEach(function(m){counts[m.mood]=(counts[m.mood]||0)+1;});
+  var maxC=Math.max(1,Math.max.apply(null,MOODS.map(function(m){return counts[m.id];})));
+  var chrono=d.moods.slice().sort(function(a,b){return a.at-b.at;});
+  return div({className:'stack-lg'},
+    h(PageHead,{eyebrow:'Pemantauan',title:'Ringkasan aktivitas',lead:'Riwayat interaksi Bunda pada sesi demo ini.'}),
+    h(Notice,{kind:'notice-sim',icon:'alert'},para(null,strong(null,'Bukan pemantauan klinis. '),'Ringkasan ini hanya mencatat apa yang Bunda lakukan di demo ini. Tidak ada petugas yang memantau, dan data ini tidak menunjukkan diagnosis, sebab-akibat, atau efektivitas perawatan.')),
+    empty?div({className:'empty'},
+      h(Icon,{name:'chart',size:40}),h3(null,'Belum ada aktivitas'),
+      para({className:'muted',style:{maxWidth:'38ch'}},'Catat perasaan, baca satu modul, atau coba latihan napas. Aktivitasnya akan muncul di sini.'),
+      div({className:'row',style:{justifyContent:'center'}},
+        btn({type:'button',className:'btn btn-primary',onClick:function(){ctx.go('mood');}},'Catat perasaan'),
+        btn({type:'button',className:'btn btn-outline',onClick:function(){ctx.tab('education');}},'Buka edukasi')),
+      btn({type:'button',className:'btn btn-text',onClick:ctx.loadSample},'Muat data contoh (fiktif)'))
+    :div({className:'stack-lg'},
+      div({className:'stats'},
+        div({className:'stat'},strong(null,done+'/'+MODULES.length),span(null,'modul selesai')),
+        div({className:'stat'},strong(null,String(d.moods.length)),span(null,'catatan perasaan')),
+        div({className:'stat'},strong(null,String(relax)),span(null,'latihan napas')),
+        div({className:'stat'},strong(null,String(d.screening.runs)),span(null,'skrining diisi'))),
+      div(null,SectionTitle({children:'Catatan perasaan'}),
+        d.moods.length?div({className:'card stack'},
+          h3(null,'Jumlah catatan per perasaan'),
+          div({className:'bars',role:'list'},MOODS.map(function(m){
+            return div({key:m.id,className:'barrow',role:'listitem'},span(null,m.label),div({className:'track'},h('i',{style:{width:Math.round(counts[m.id]/maxC*100)+'%'}})),strong(null,String(counts[m.id])));
+          })),
+          chrono.length>=3?div({className:'stack',style:{gap:'6px'}},h3(null,'Urutan catatan (lama ke baru)'),
+            div({className:'timeline'},chrono.map(function(m){return div({key:m.id,className:'tl'},h(Face,{id:m.mood,size:32}),strong(null,moodLabel(m.mood)),span(null,fmtDay(m.at)));})),
+            para({className:'hint'},'Ini hanya urutan catatan, bukan skor atau penilaian perkembangan.'))
+          :para({className:'hint'},'Garis waktu tampil setelah minimal 3 catatan.'),
+          h(MoodHistory,{ctx:ctx}))
+        :div({className:'empty'},para(null,'Belum ada catatan perasaan.'),btn({type:'button',className:'btn btn-outline',onClick:function(){ctx.go('mood');}},'Catat perasaan'))),
+      div(null,SectionTitle({children:'Modul edukasi'}),
+        div({className:'card-flat'},MODULES.map(function(m){var ok=!!d.completed[m.id];
+          return div({key:m.id,className:'act'},div({className:'act-ic'},h(Icon,{name:ok?'check':'book',size:20})),
+            div({className:'row',style:{justifyContent:'space-between',gap:'8px'}},span({style:{minWidth:0,flex:1}},m.title),span({className:'tag '+(ok?'tag-ok':'')},ok?'Selesai ✓':'Belum')));}))),
+      div(null,SectionTitle({children:'Riwayat aktivitas'}),
+        d.activity.length?div({className:'card-flat'},d.activity.slice(0,12).map(function(a){
+          return div({key:a.id,className:'act'},div({className:'act-ic'},h(Icon,{name:ACT_ICON[a.type]||'info',size:20})),
+            div({style:{minWidth:0}},para({style:{overflowWrap:'anywhere'}},a.label),span({className:'hint'},fmtDate(a.at)+(a.sample?' · contoh fiktif':''))));
+        })):para({className:'muted'},'Belum ada riwayat aktivitas.')),
+      !hasSample?btn({type:'button',className:'btn btn-text',onClick:ctx.loadSample},'Muat data contoh (fiktif)'):null));
+}
+
+/* ---------- help ---------- */
+function Help(props){
+  var ctx=props.ctx;
+  return div({className:'stack-lg',style:{gap:'var(--s-6)'}},
+    h(PageHead,{eyebrow:'Bantuan',title:'Butuh bantuan?',onBack:ctx.back,backLabel:'Kembali ke aplikasi',lead:'Bunda tidak harus menghadapi perasaan yang berat sendirian.'}),
+    div({className:'band-peach stack',role:'region','aria-labelledby':'emg-h',style:{border:'2px solid var(--alert)',gap:'var(--s-3)',padding:'var(--s-5)'}},
+      div({className:'row'},span({className:'tag tag-sim'},'Darurat'),h3({id:'emg-h'},'Bila Bunda dalam bahaya sekarang')),
+      para({style:{fontWeight:600}},'Jika Bunda dalam bahaya langsung atau memiliki pikiran menyakiti diri, segera ke IGD Rumah Sakit terdekat. Hubungi 119 (Kemenkes) atau 112 (Darurat).')),
+    h(Notice,{kind:'notice-soft',icon:'info'},strong(null,'Tentang prototipe ini'),
+      para(null,'Prototipe ini bukan layanan darurat. Tidak ada petugas yang memantau penggunaan Bunda, tidak ada pesan yang dikirim ke siapa pun, dan tidak ada peringatan otomatis ke tenaga kesehatan.')),
+    div({className:'card stack'},
+      h2({style:{fontSize:'1.25rem'}},'Menghubungi bidan atau tenaga kesehatan'),
+      para({style:{color:'var(--fg2)'}},'Bunda dapat menghubungi bidan atau tenaga kesehatan yang kompeten untuk berdiskusi tentang perasaan Bunda dan menentukan langkah berikutnya. Mereka juga dapat membantu menghubungkan Bunda dengan psikolog atau psikiater bila diperlukan.'),
+      para({className:'hint'},'Sebutkan hal yang paling mengganggu, sejak kapan, dan bagaimana dampaknya pada tidur atau aktivitas Bunda.')),
+    div({className:'band stack',role:'region','aria-labelledby':'kons-h',style:{gap:'var(--s-4)',padding:'var(--s-5)'}},
+      h2({id:'kons-h',style:{fontSize:'1.25rem'}},'Konsultasi rutin'),
+      div({className:'card-flat stack',style:{gap:'var(--s-3)',padding:'var(--s-5)'}},
+        span({className:'eyebrow'},'Mitra rujukan'),
+        h3(null,FASKES.name),
+        div({className:'stack',style:{gap:'4px'}},strong(null,'Alamat'),para(null,FASKES.addr)),
+        div({className:'stack',style:{gap:'4px'}},strong(null,'Jam layanan'),FASKES.hours.map(function(t,i){return para({key:i},t);})),
+        h('a',{href:FASKES.maps,target:'_blank',rel:'noopener noreferrer',className:'btn btn-primary btn-block'},'Buka di Google Maps',span({className:'visually-hidden'},' (membuka tab baru)')))),
+    div({className:'stack'},
+      btn({type:'button',className:'btn btn-primary btn-block',onClick:ctx.back},'Kembali ke aplikasi'),
+      btn({type:'button',className:'btn btn-outline btn-block',onClick:function(){ctx.go('module',{id:'e6'});}},'Baca: kapan dan bagaimana mencari bantuan')));
+}
+
+/* ---------- profile ---------- */
+function Switch(props){
+  return btn({type:'button',role:'switch','aria-checked':props.checked,className:'switch',onClick:props.onChange},
+    div({style:{minWidth:0}},strong(null,props.label),para({className:'hint'},props.hint)),
+    span({className:'switch-track','aria-hidden':'true'},props.checked?span(null,'ON'):null,span({className:'switch-knob'}),props.checked?null:span({style:{marginLeft:'4px',color:'var(--fg2)'}},'OFF')));
+}
+function Profile(props){
+  var ctx=props.ctx,p=ctx.data.prefs;
+  var a=useState(false),confirm=a[0],setConfirm=a[1];
+  var b=useState(''),msg=b[0],setMsg=b[1];
+  function setPref(k,v){ctx.setData(function(d){var n=Object.assign({},d.prefs);n[k]=v;return Object.assign({},d,{prefs:n});});}
+  return div({className:'stack-lg'},
+    h(PageHead,{eyebrow:'Profil',title:'Profil dan privasi'}),
+    div({className:'card stack'},
+      div({className:'row',style:{justifyContent:'space-between'}},h3(null,'Status mode'),span({className:'tag tag-ok'},'Mode demo aktif')),
+      para({style:{color:'var(--fg2)'}},'Semua isian disimpan sementara di halaman ini dan tidak dikirim ke server. Mohon tidak memasukkan data pribadi atau kesehatan yang nyata.'),
+      div(null,btn({type:'button',className:'btn btn-outline btn-sm',onClick:function(){ctx.go('privacy');}},h(Icon,{name:'shield',size:18}),'Baca informasi privasi'))),
+    div({className:'card'},
+      h3({style:{marginBottom:'6px'}},'Preferensi'),
+      h(Switch,{label:'Pengingat harian',hint:'Simulasi. Tidak ada notifikasi nyata yang dikirim.',checked:p.reminder,onChange:function(){setPref('reminder',!p.reminder);}}),
+      h(Switch,{label:'Tampilkan isi notifikasi di layar kunci',hint:'Simulasi. Bawaan mati agar informasi sensitif tidak terlihat orang lain.',checked:p.lockscreen,onChange:function(){setPref('lockscreen',!p.lockscreen);}}),
+      div({className:'stack',style:{gap:'8px',paddingTop:'12px',borderTop:'1px solid var(--line)'}},
+        strong(null,'Ukuran teks'),
+        div({className:'seg',role:'group','aria-label':'Ukuran teks'},
+          btn({type:'button','aria-pressed':p.textSize==='normal',onClick:function(){setPref('textSize','normal');}},'Normal'),
+          btn({type:'button','aria-pressed':p.textSize==='large',onClick:function(){setPref('textSize','large');}},'Besar')))),
+    div({className:'card stack'},
+      h3(null,'Hapus data demo'),
+      para({style:{color:'var(--fg2)'}},'Menghapus catatan perasaan, aktivitas, modul yang ditandai selesai, dan jawaban skrining pada sesi ini.'),
+      confirm
+        ?div({className:'stack',role:'group','aria-label':'Konfirmasi hapus data demo'},
+            para({style:{fontWeight:600}},'Yakin ingin menghapus semua data demo?'),
+            div({className:'row'},
+              btn({type:'button',className:'btn btn-primary',onClick:function(){ctx.reset();setConfirm(false);setMsg('Data demo sudah dihapus.');}},'Ya, hapus semua'),
+              btn({type:'button',className:'btn btn-outline',onClick:function(){setConfirm(false);}},'Batal')))
+        :div(null,btn({type:'button',className:'btn btn-outline',onClick:function(){setConfirm(true);setMsg('');}},h(Icon,{name:'trash',size:18}),'Hapus semua data demo')),
+      msg?para({role:'status',style:{fontWeight:600}},msg):null),
+    div({className:'card stack no-print',role:'region','aria-labelledby':'pj-h',style:{gap:'var(--s-4)',padding:'var(--s-5)'}},
+      span({className:'eyebrow'},'Tentang Aplikasi & Penanggung Jawab'),
+      h3({id:'pj-h'},'Bdn. Erina Eka Hatini, SST., MPH'),
+      dl({className:'stack',style:{gap:'var(--s-3)'}},
+        div({className:'stack',style:{gap:'2px'}},dt({style:{fontWeight:600}},'Peran'),dd({style:{margin:0}},'Inovator & Penanggung Jawab Klinis')),
+        div({className:'stack',style:{gap:'2px'}},dt({style:{fontWeight:600}},'Email'),dd({style:{margin:0}},h('a',{href:'mailto:erinaeka@polkesraya.ac.id',style:{color:'var(--teal-700, var(--fg))',textDecoration:'underline',overflowWrap:'anywhere'}},'erinaeka@polkesraya.ac.id')))),
+      h(Notice,{kind:'notice-soft',icon:'shield'},para(null,'BAKESAH Fase 1 adalah prototipe edukasi dan administratif. Instrumen EPDS dan alur rujukan mengikuti Buku Saku Kemenkes 2026. Penilaian hasil skrining tetap menjadi kewenangan Bidan/Dokter.'))),
+    div({className:'card stack'},
+      h3(null,'Tentang prototipe'),
+      dl(null,
+        div({className:'kv'},dt(null,'Nama'),dd(null,BRAND.name+' · '+BRAND.full)),
+        div({className:'kv'},dt(null,'Versi prototipe'),dd(null,BRAND.version)),
+        div({className:'kv'},dt(null,'Jenis'),dd(null,'Prototipe web interaktif. Bukan aplikasi Android terkompilasi.'))),
+      h(Notice,{kind:'notice-sim',icon:'alert'},para(null,'Belum diterapkan di demo ini: autentikasi, kontrol akses, sinkronisasi server, dan tata kelola data produksi. Prototipe ini belum divalidasi secara klinis dan tidak siap untuk penggunaan nyata.'))),
+    btn({type:'button',className:'btn btn-text',onClick:function(){ctx.tab('welcome');}},'Lihat layar sambutan lagi'));
+}
+
+/* ---------- app ---------- */
+function App(){
+  var s1=useState([{name:'welcome'}]),stack=s1[0],setStack=s1[1];
+  var s2=useState(false),consented=s2[0],setConsented=s2[1];
+  var s3=useState(initialData),data=s3[0],setData=s3[1];
+  var route=stack[stack.length-1];
+  function go(name,params){setStack(function(s){return s.concat([{name:name,params:params}]);});}
+  function back(){setStack(function(s){return s.length>1?s.slice(0,-1):[{name:consented?'home':'welcome'}];});}
+  function tab(name){setStack([{name:name}]);}
+  function log(type,label){setData(function(d){return Object.assign({},d,{activity:[{id:uid('act'),type:type,label:label,at:Date.now()}].concat(d.activity)});});}
+  function deleteMood(id){setData(function(d){return Object.assign({},d,{moods:d.moods.filter(function(m){return m.id!==id;})});});}
+  function reset(){setData(function(d){return initialData(d.prefs);});}
+  function loadSample(){
+    setData(function(d){
+      if(d.moods.some(function(m){return m.sample;}))return d;
+      var s=sampleData();
+      return Object.assign({},d,{
+        moods:s.moods.concat(d.moods).sort(function(a,b){return b.at-a.at;}),
+        activity:s.acts.concat(d.activity).sort(function(a,b){return b.at-a.at;})});
+    });
+  }
+  function consent(){setConsented(true);setStack([{name:'home'}]);}
+  var ctx={data:data,setData:setData,go:go,back:back,tab:tab,log:log,deleteMood:deleteMood,reset:reset,loadSample:loadSample,consent:consent,consented:consented};
+
+  useEffect(function(){
+    try{window.scrollTo(0,0);}catch(e){}
+    var t=document.getElementById('screen-title');
+    if(t&&t.focus){try{t.focus({preventScroll:true});}catch(e){}}
+  },[stack]);
+  useEffect(function(){document.documentElement.setAttribute('data-size',data.prefs.textSize);},[data.prefs.textSize]);
+
+  var name=route.name,body;
+  if(name==='welcome')return h(Welcome,{ctx:ctx});
+  if(name==='exit')return h(Exit,{ctx:ctx});
+  if(name==='privacy'&&!consented)return h(Privacy,{ctx:ctx});
+  if(!consented)return h(Welcome,{ctx:ctx});
+  switch(name){
+    case 'screening':body=h(Screening,{ctx:ctx});break;
+    case 'education':body=h(Education,{ctx:ctx});break;
+    case 'module':body=h(Module,{ctx:ctx,id:route.params.id,key:route.params.id});break;
+    case 'monitoring':body=h(Monitoring,{ctx:ctx});break;
+    case 'profile':body=h(Profile,{ctx:ctx});break;
+    case 'relax':body=h(Relax,{ctx:ctx});break;
+    case 'mood':body=h(Mood,{ctx:ctx});break;
+    case 'help':body=h(Help,{ctx:ctx});break;
+    case 'privacy':body=h(Privacy,{ctx:ctx});break;
+    default:body=h(Home,{ctx:ctx});
+  }
+  return h(Shell,{ctx:ctx,route:route},body);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+})();
+</script>
+
+</body></html>
