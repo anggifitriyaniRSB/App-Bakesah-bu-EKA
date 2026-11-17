@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BAKESAH Digital — Portal</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Newsreader:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#FDFBFE;--surface:#fff;--soft:#F0E8F4;--peach:#F9E1DA;--fg:#2A1F33;--fg2:#4A3D55;--muted:#6B5F76;--line:#E7DFEC;--primary:#602B75;--on-primary:#fff;--alert:#8E3A1C;--focus:#9A4A12;--pink:#FD5294;--teal:#028579;--teal-soft:#DDF1EE;
+--font-display:"Newsreader",Georgia,serif;--font-body:"Figtree",system-ui,sans-serif;--r:16px;--shadow:0 1px 2px rgba(42,31,51,.06),0 6px 18px rgba(42,31,51,.07)}
+@media (prefers-color-scheme:dark){:root{--bg:#17101C;--surface:#21172A;--soft:#2F2139;--peach:#3B2C26;--fg:#F1EAF5;--fg2:#D3C7DC;--muted:#A99BB5;--line:#3B2B47;--primary:#D4A9E8;--on-primary:#1E1026;--pink:#FF7FB0;--teal:#5CCBBE;--teal-soft:#17332F;--alert:#F0AA8B;--focus:#F0B27A}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--font-body)}
+h1,h2,h3{font-family:var(--font-display);font-weight:500;margin:0;line-height:1.25}h1{font-size:1.7rem}h2{font-size:1.3rem}h3{font-size:1.1rem}p{margin:0}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+header{display:flex;align-items:center;gap:12px;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+header img{height:40px}header .sp{flex:1}nav{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--line)}
+nav button{white-space:nowrap}main{max-width:1000px;margin:0 auto;padding:20px 16px 80px;display:grid;gap:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:grid;gap:12px}
+.band-t{background:var(--teal-soft)}.band-r{background:var(--peach);border:2px solid var(--alert)}
+.btn{font:600 1rem var(--font-body);min-height:44px;padding:8px 18px;border-radius:999px;border:2px solid var(--primary);background:var(--primary);color:var(--on-primary);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.o{background:transparent;color:var(--primary)}.btn.sm{min-height:36px;padding:4px 14px;font-size:.9rem}.btn[aria-current=page]{background:var(--soft);color:var(--primary)}
+.btn[disabled]{opacity:.5}.tag{display:inline-block;padding:2px 10px;border-radius:999px;background:var(--soft);font-size:.8rem;font-weight:600}.tag.w{background:var(--peach);color:var(--alert)}
+.demo{background:var(--peach);color:var(--alert);font-size:.85rem;font-weight:600;text-align:center;padding:6px 12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.stat{background:var(--soft);border-radius:12px;padding:12px}.stat b{font:500 1.8rem var(--font-display);display:block}
+label{font-weight:600;display:grid;gap:4px}input,select,textarea{font:inherit;color:var(--fg);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:10px;min-height:44px;width:100%}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:10px}legend{font:500 1.2rem var(--font-display);margin-bottom:10px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:2px solid var(--line);border-radius:12px;padding:12px;font-weight:500;cursor:pointer}.opt input{width:22px;min-height:22px;margin-top:2px}.opt:has(input:checked){border-color:var(--primary);background:var(--soft)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}th{background:var(--soft)}.scroll{overflow-x:auto}
+.bar{height:12px;background:var(--primary);border-radius:6px;min-width:2px}.err{color:var(--alert);font-weight:600}
+dialog{border:2px solid var(--alert);border-radius:var(--r);background:var(--peach);color:var(--fg);max-width:520px;padding:24px}dialog::backdrop{background:rgba(0,0,0,.5)}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:12px;z-index:20;max-width:90vw}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 14px}summary{font-weight:600;cursor:pointer}
+@media print{header,nav,.no-print{display:none!important}}
+@media (min-width:700px){main{padding-top:28px}}
+</style></head><body>
+<div class="demo" role="note">DEMO · DATA UJI COBA SINTETIS · BUKAN DIAGNOSIS · TANPA SKOR</div>
+<div id="root"></div><div id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+function el(t,p,...k){const e=document.createElement(t);for(const[n,v]of Object.entries(p||{})){if(n==='class')e.className=v;else if(n.startsWith('on'))e.addEventListener(n.slice(2),v);else if(v===true)e.setAttribute(n,'');else if(v!==false&&v!=null)e.setAttribute(n,v);}
+ for(const c of k.flat())if(c!=null&&c!==false)e.append(c.nodeType?c:document.createTextNode(String(c)));return e}
+let S={user:null,cfg:null,tab:null,scr:null,filters:{preset:'month',from:'',to:'',status:'',group:'week'}};
+function toast(m,err){const t=$('#toast');t.textContent=m;t.hidden=false;t.style.background=err?'var(--alert)':'';clearTimeout(toast.i);toast.i=setTimeout(()=>t.hidden=true,5000)}
+async function api(path,opt={}){const o={method:opt.method||'GET',headers:{'X-Requested-With':'bakesah'},credentials:'same-origin'};
+ if(opt.body){o.headers['Content-Type']='application/json';o.body=JSON.stringify(opt.body)}
+ const r=await fetch(path,o);let d={};try{d=await r.json()}catch(e){}
+ if(r.status===401&&S.user){S.user=null;render()}if(!r.ok)throw new Error(d.error||'Terjadi kesalahan.');return d}
+async function download(url){try{const r=await fetch(url,{credentials:'same-origin'});if(!r.ok){let d={};try{d=await r.json()}catch(e){}return toast(d.error||'Gagal mengunduh.',true)}
+ const b=await r.blob(),n=(r.headers.get('Content-Disposition')||'').match(/filename="?([^";]+)/),a=el('a',{href:URL.createObjectURL(b),download:n?n[1]:'laporan.xlsx'});document.body.append(a);a.click();a.remove();toast('Laporan berhasil diunduh.')}catch(e){toast('Gagal mengunduh.',true)}}
+const ROLE={patient:'Ibu Hamil',midwife:'Bidan',admin:'Administrator'};
+const TABS={patient:[['home','Beranda'],['screen','Skrining'],['history','Riwayat'],['edu','Edukasi']],midwife:[['dash','Dasbor'],['patients','Pasien']],admin:[['dash','Statistik'],['users','Pengguna'],['audit','Log Aktivitas']]};
+async function boot(){S.cfg=await api('/api/config');const m=await api('/api/me');S.user=m.user;if(S.user)S.tab=TABS[S.user.role][0][0];render()}
+async function render(){const root=$('#root');root.replaceChildren();if(!S.user){root.append(loginView());return}
+ const main=el('main',{id:'main',tabindex:'-1'});
+ root.append(el('header',{},el('img',{src:'/static/logo-full.jpg',alt:'Logo BAKESAH Digital'}),el('span',{class:'sp'}),el('span',{class:'tag'},ROLE[S.user.role]),el('span',{},S.user.name),
+   el('button',{class:'btn o sm',onclick:async()=>{await api('/api/logout',{method:'POST'});S.user=null;render()}},'Keluar')),
+  el('nav',{'aria-label':'Menu utama'},TABS[S.user.role].map(([k,l])=>el('button',{class:'btn o sm','aria-current':S.tab===k?'page':null,onclick:()=>{S.tab=k;S.sel=null;render()}},l))),main);
+ try{await VIEWS[S.user.role](main)}catch(e){main.append(el('p',{class:'err',role:'alert'},e.message))}
+ main.prepend(el('h1',{id:'h1',tabindex:'-1'},title()));$('#h1').focus({preventScroll:true})}
+function title(){const t=TABS[S.user.role].find(x=>x[0]===S.tab);return S.sel?'Detail pasien':(t?t[1]:'')}
+function loginView(){const err=el('p',{class:'err',role:'alert'});const f=el('form',{class:'card',onsubmit:async e=>{e.preventDefault();err.textContent='';try{const r=await api('/api/login',{method:'POST',body:{email:f.elements.email.value,password:f.elements.password.value}});S.user=r.user;S.tab=TABS[r.user.role][0][0];render()}catch(x){err.textContent=x.message}}},
+  el('label',{},'Email',el('input',{name:'email',type:'email',autocomplete:'username',required:true})),el('label',{},'Kata sandi',el('input',{name:'password',type:'password',autocomplete:'current-password',required:true})),err,el('button',{class:'btn',type:'submit'},'Masuk'));
+ const demo=S.cfg.demo?el('div',{class:'card band-t'},el('h3',{},'Akun demo (khusus development)'),el('p',{},'Administrator: admin@bakesah.test · Admin#Dev2026'),el('p',{},'Bidan: bidan1@bakesah.test / bidan2@bakesah.test · Bidan#Dev2026'),el('p',{},'Ibu hamil: ibu01@bakesah.test … ibu10@bakesah.test · Ibu#Dev2026')):null;
+ return el('main',{},el('img',{src:'/static/logo-full.jpg',alt:'Logo BAKESAH Digital',style:'max-width:260px;margin:auto'}),el('h1',{},'Masuk ke BAKESAH Digital'),
+  el('p',{},'Aplikasi pendamping edukasi dan administrasi. Aplikasi ini tidak menghitung skor dan bukan alat diagnosis.'),f,demo)}
+const fd=s=>s?String(s).slice(0,10):'-';
+const kv=(a,b)=>el('p',{},el('strong',{},a+': '),b==null||b===''?'-':b);
+const catTag=c=>el('span',{class:'tag'+(c.startsWith('Perlu evaluasi')?' w':'')},c);
+/* ---------- PASIEN ---------- */
+const VIEWS={};
+VIEWS.patient=async main=>{const d=await api('/api/patient/dashboard');S.pd=d;({
+ home:()=>{const p=d.profile,g=d.pregnancy;main.append(el('div',{class:'card'},h3('Identitas'),kv('Nama',p.name),kv('Email',p.email),kv('Usia',p.age),kv('Terdaftar',p.registered),kv('Bidan pendamping',p.midwife)),
+  el('div',{class:'card'},h3('Informasi kehamilan'),g?[kv('Usia kehamilan',g.ga_weeks!=null?g.ga_weeks+' minggu':'-'),kv('Perkiraan persalinan',g.edd),kv('Status',g.status)]:el('p',{},'Belum ada data.')),
+  el('div',{class:'card band-t'},h3('Rekomendasi tindak lanjut'),d.followups.length?el('ul',{},d.followups.map(f=>el('li',{},f.action+(f.due?' · target '+f.due:'')+' · '+f.status))):el('p',{},'Belum ada tindak lanjut. Hasil skrining dinilai oleh Bidan, Dokter, atau Psikolog Klinis.')),
+  el('button',{class:'btn',onclick:()=>download('/api/patient/export.xlsx')},'DOWNLOAD LAPORAN SAYA (EXCEL)'))},
+ screen:()=>screenFlow(main,d),
+ history:()=>{main.append(el('div',{class:'card'},h3('Riwayat skrining'),d.screenings.length?tbl(['Tanggal','Kunjungan','Kategori (penilaian tenaga kesehatan)','Catatan'],d.screenings.map(s=>[fd(s.date),s.visit,catTag(s.category),s.note||'-'])):el('p',{},'Belum ada skrining.')),
+  el('div',{class:'card'},h3('Riwayat pendampingan'),d.sessions.length?tbl(['Tanggal','Jenis','Ringkasan'],d.sessions.map(s=>[s.date,s.type,s.summary||'-'])):el('p',{},'Belum ada pendampingan.')))},
+ edu:()=>{main.append(...d.materials.map(m=>el('details',{},el('summary',{},m.title+' · '+m.topic),el('p',{},m.body))),el('a',{class:'btn o',href:'/edukasi',target:'_blank',rel:'noopener'},'Buka modul edukasi & relaksasi (tab baru)'))}})[S.tab]()};
+const h3=t=>el('h3',{},t);
+function tbl(h,rows){return el('div',{class:'scroll'},el('table',{},el('thead',{},el('tr',{},h.map(x=>el('th',{scope:'col'},x)))),el('tbody',{},rows.map(r=>el('tr',{},r.map(c=>el('td',{},c)))))))}
+function screenFlow(main,d){const I=S.cfg.instrument,st=S.scr||(S.scr={step:'intro',i:0,a:{},visit:I.visits[0]});const rer=()=>render();
+ if(st.step==='intro'){main.append(el('div',{class:'card'},el('p',{},'Skrining ini dirancang untuk K1 (Kunjungan Pertama), K5 (Kunjungan Kelima), dan KF3 (Nifas Ketiga). Ingat-ingat kondisi Bunda selama 7 hari terakhir.'),
+  el('label',{},'Jenis kunjungan',(()=>{const s=el('select',{onchange:e=>st.visit=e.target.value},I.visits.map(v=>el('option',{value:v,selected:v===st.visit},v)));return s})()),
+  el('p',{},'Aplikasi tidak menghitung skor. Penilaian hasil hanya dilakukan oleh Bidan, Dokter, atau Psikolog Klinis.'),el('button',{class:'btn',onclick:()=>{st.step='q';rer()}},'Mulai')));return}
+ if(st.step==='done'){main.append(el('div',{class:'card'},h3('Jawaban Bunda Tercatat'),el('p',{},'Terima kasih Bunda. Sesuai panduan, penilaian hasil skrining hanya bisa dilakukan oleh Bidan, Dokter, atau Psikolog Klinis.'),
+  el('div',{class:'row no-print'},el('button',{class:'btn',onclick:()=>window.print()},'Tunjukkan Lembar Ini ke Tenaga Kesehatan'),el('button',{class:'btn o',onclick:()=>{S.scr=null;S.tab='home';rer()}},'Kembali ke Beranda'))));return}
+ const it=I.items[st.i],err=el('p',{class:'err',role:'alert'});
+ async function submit(extra){try{const r=await api('/api/patient/screenings',{method:'POST',body:{visit:st.visit,answers:st.a}});if(r.safety)return safety(r.safety_text);st.step='done';rer()}catch(e){err.textContent=e.message}}
+ function safety(txt){const dlg=el('dialog',{role:'alertdialog','aria-labelledby':'sd-h','aria-describedby':'sd-t'},el('h2',{id:'sd-h'},'Peringatan keselamatan'),el('p',{id:'sd-t',style:'font-weight:600;margin:12px 0'},txt),
+  el('div',{class:'row'},el('button',{class:'btn',autofocus:true,onclick:()=>{dlg.close();dlg.remove();S.scr=null;S.tab='home';rer()}},'Tutup peringatan')));document.body.append(dlg);dlg.showModal()}
+ main.append(el('div',{class:'card'},el('p',{class:'tag',style:'justify-self:start'},`Pertanyaan ${st.i+1} dari ${I.items.length}`),
+  el('form',{onsubmit:e=>{e.preventDefault();if(!st.a[it.id]){err.textContent='Mohon pilih salah satu jawaban.';return}
+   if(it.id===I.safety_item&&st.a[it.id]===I.safety_option)return submit();if(st.i<I.items.length-1){st.i++;rer()}else submit()}},
+   el('fieldset',{},el('legend',{},`${st.i+1}. ${it.text}`),it.options.map(o=>el('label',{class:'opt'},el('input',{type:'radio',name:it.id,value:o.key,checked:st.a[it.id]===o.key,onchange:()=>{st.a[it.id]=o.key;err.textContent='';if(it.id===I.safety_item&&o.key===I.safety_option)submit()}}),el('span',{},o.key+'. '+o.label)))),
+   err,el('div',{class:'row',style:'margin-top:12px'},el('button',{type:'button',class:'btn o',onclick:()=>{if(st.i>0)st.i--;else st.step='intro';rer()}},'Kembali'),el('button',{class:'btn',type:'submit'},st.i===I.items.length-1?'Selesai':'Lanjut')))))}
+/* ---------- STAF ---------- */
+function qs(){const f=S.filters,t=new Date(),iso=d=>d.toISOString().slice(0,10);let from=f.from,to=f.to;
+ if(f.preset!=='range'){const n={day:0,week:6,month:29}[f.preset];to=iso(t);from=iso(new Date(t-n*864e5))}
+ const group=f.preset==='day'?'day':f.preset==='month'?'week':f.group;return new URLSearchParams({from,to,status:f.status,group}).toString()}
+function filterBar(rerender){const f=S.filters,sel=(l,k,opts)=>el('label',{},l,el('select',{onchange:e=>{f[k]=e.target.value;rerender()}},opts.map(([v,t])=>el('option',{value:v,selected:f[k]===v},t))));
+ return el('div',{class:'card'},h3('Filter'),el('div',{class:'grid'},sel('Periode','preset',[['day','Harian (hari ini)'],['week','Mingguan (7 hari)'],['month','Bulanan (30 hari)'],['range','Rentang tanggal']]),
+  f.preset==='range'?[el('label',{},'Dari',el('input',{type:'date',value:f.from,onchange:e=>{f.from=e.target.value;rerender()}})),el('label',{},'Sampai',el('input',{type:'date',value:f.to,onchange:e=>{f.to=e.target.value;rerender()}}))]:null,
+  sel('Status tindak lanjut','status',[['','Semua'],...S.cfg.fu_status.map(x=>[x,x])])))}
+function chart(series){if(!series.length)return el('p',{},'Belum ada data pada periode ini.');const W=Math.max(320,series.length*60),H=180,mx=Math.max(1,...series.map(s=>Math.max(s.screenings,s.sessions))),ns='http://www.w3.org/2000/svg';
+ const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',`0 0 ${W} ${H+30}`);svg.setAttribute('role','img');svg.setAttribute('aria-label','Grafik jumlah skrining dan pendampingan per periode: '+series.map(s=>`${s.period}: ${s.screenings} skrining, ${s.sessions} pendampingan`).join('; '));
+ series.forEach((s,i)=>{[['screenings','var(--primary)',0],['sessions','var(--teal)',1]].forEach(([k,c,j])=>{const h=s[k]/mx*H,r=document.createElementNS(ns,'rect');r.setAttribute('x',i*60+8+j*22);r.setAttribute('y',H-h);r.setAttribute('width',20);r.setAttribute('height',h);r.setAttribute('fill',c);svg.append(r)});
+  const t=document.createElementNS(ns,'text');t.setAttribute('x',i*60+6);t.setAttribute('y',H+16);t.setAttribute('font-size','10');t.setAttribute('fill','currentColor');t.textContent=s.period.slice(5)||s.period;svg.append(t)});
+ return el('div',{class:'scroll'},svg,el('p',{style:'font-size:.85rem'},'■ Skrining (ungu)  ■ Pendampingan (teal)'))}
+VIEWS.staff=async(main,role)=>{const draw=async()=>{const d=await api('/api/staff/dashboard?'+qs()),m=d.summary;box.replaceChildren(
+  el('div',{class:'grid'},[['Ibu hamil dalam cakupan',m.patients],['Skrining',m.screenings],['Sesi pendampingan',m.sessions],['Perlu tindak lanjut',m.need_followup]].map(([l,v])=>el('div',{class:'stat'},el('b',{},v),l))),
+  el('div',{class:'card'},h3('Perkembangan per periode'),chart(m.series)),
+  el('div',{class:'card'},h3('Distribusi kategori (penilaian tenaga kesehatan)'),Object.entries(m.categories).map(([k,v])=>el('div',{},el('div',{class:'row',style:'justify-content:space-between'},el('span',{},k),el('b',{},v)),el('div',{class:'bar',style:`width:${m.screenings?v/m.screenings*100:0}%`}))),
+   el('p',{},'Rekap tindak lanjut: '+Object.entries(m.followups).map(([k,v])=>k+' '+v).join(' · '))),
+  el('div',{class:'card'},h3('Daftar pasien'),tbl(['ID',...(role==='midwife'?['Nama']:['Bidan']),'Usia','Usia hamil (mgg)','Kategori terakhir','Tindak lanjut aktif',...(role==='midwife'?['']:[''])],d.patients.map(p=>[p.code,role==='midwife'?p.name:p.midwife,p.age||'-',p.ga_weeks??'-',p.last_category,p.pending,
+   role==='midwife'?el('button',{class:'btn sm o',onclick:()=>{S.sel=p.id;S.tab='patients';render()}},'Buka'):el('button',{class:'btn sm o',onclick:()=>download(`/api/admin/export-patient/${p.id}.xlsx`)},'Unduh')])),
+   ),el('button',{class:'btn',onclick:()=>download('/api/staff/export.xlsx?'+qs())},role==='midwife'?'DOWNLOAD LAPORAN PASIEN (EXCEL)':'DOWNLOAD LAPORAN AGREGAT (EXCEL)'))};
+ const box=el('div',{style:'display:grid;gap:20px'});main.append(filterBar(draw),box);await draw()};
+VIEWS.midwife=async main=>{if(S.tab==='dash'&&!S.sel)return VIEWS.staff(main,'midwife');
+ if(!S.sel){const d=await api('/api/staff/dashboard?'+qs());main.append(el('div',{class:'card'},tbl(['ID','Nama','Usia','Kategori terakhir',''],d.patients.map(p=>[p.code,p.name,p.age||'-',p.last_category,el('button',{class:'btn sm o',onclick:()=>{S.sel=p.id;render()}},'Buka')]))));return}
+ const d=await api('/api/midwife/patients/'+S.sel),p=d.patient,C=S.cfg.categories.slice(1);
+ main.append(el('button',{class:'btn o sm',style:'justify-self:start',onclick:()=>{S.sel=null;render()}},'← Daftar pasien'),
+  el('div',{class:'card'},h3(`${p.code} · ${p.name}`),kv('Usia',p.age),kv('Usia kehamilan',p.ga_weeks!=null?p.ga_weeks+' minggu':'-'),kv('Perkiraan persalinan',p.edd)),
+  el('div',{class:'card'},h3('Riwayat skrining'),!d.screenings.length?el('p',{},'Belum ada skrining.'):d.screenings.map(s=>{const note=el('textarea',{rows:2,maxlength:500},s.note),inote=el('textarea',{rows:2,maxlength:500},s.internal_note),cat=el('select',{},C.map(c=>el('option',{value:c,selected:c===s.category},c)));
+   return el('details',{open:s.category===S.cfg.categories[0]},el('summary',{},fd(s.date)+' · '+s.visit+' · ',catTag(s.category),s.safety?el('span',{class:'tag w'},' Penanda keselamatan'):null),
+    el('ol',{},s.answers.map(a=>el('li',{},a.q+' ',el('strong',{},a.a)))),
+    el('form',{style:'display:grid;gap:8px',onsubmit:async e=>{e.preventDefault();try{await api(`/api/midwife/screenings/${s.id}/assess`,{method:'POST',body:{category:cat.value,patient_note:note.value,internal_note:inote.value}});toast('Penilaian tersimpan.');render()}catch(x){toast(x.message,true)}}},
+     el('p',{},'Penilaian ditentukan oleh tenaga kesehatan; aplikasi tidak menghitung skor.'),el('label',{},'Kategori penilaian',cat),el('label',{},'Catatan untuk pasien',note),el('label',{},'Catatan internal (tidak terlihat pasien)',inote),el('button',{class:'btn sm',type:'submit'},'Simpan penilaian')))})),
+  el('div',{class:'card'},h3('Pendampingan'),d.sessions.length?tbl(['Tanggal','Jenis','Ringkasan pasien','Catatan internal'],d.sessions.map(s=>[s.session_date,s.session_type,s.patient_summary||'-',s.internal_note||'-'])):el('p',{},'Belum ada sesi.'),
+   (()=>{const f=el('form',{style:'display:grid;gap:8px',onsubmit:async e=>{e.preventDefault();try{await api('/api/midwife/sessions',{method:'POST',body:{patient_id:p.id,date:f.elements.date.value,type:f.elements.type.value,summary:f.elements.summary.value,internal_note:f.elements.inote.value}});toast('Sesi tercatat.');render()}catch(x){toast(x.message,true)}}},
+    h3('Catat sesi baru'),el('label',{},'Tanggal',el('input',{name:'date',type:'date',required:true,value:new Date().toISOString().slice(0,10)})),el('label',{},'Jenis',el('select',{name:'type'},S.cfg.session_types.map(t=>el('option',{},t)))),el('label',{},'Ringkasan untuk pasien',el('textarea',{name:'summary',rows:2,maxlength:500})),el('label',{},'Catatan internal',el('textarea',{name:'inote',rows:2,maxlength:500})),el('button',{class:'btn sm',type:'submit'},'Simpan sesi'));return f})()),
+  el('div',{class:'card'},h3('Tindak lanjut'),d.followups.length?tbl(['Tindakan','Target','Status'],d.followups.map(f=>[f.action,f.due_date||'-',el('select',{'aria-label':'Status: '+f.action,onchange:async e=>{try{await api('/api/midwife/followups/'+f.id,{method:'PATCH',body:{status:e.target.value}});toast('Status diperbarui.')}catch(x){toast(x.message,true)}}},S.cfg.fu_status.map(s=>el('option',{selected:s===f.status},s)))])):el('p',{},'Belum ada tindak lanjut.'),
+   (()=>{const f=el('form',{class:'row',onsubmit:async e=>{e.preventDefault();try{await api('/api/midwife/followups',{method:'POST',body:{patient_id:p.id,action:f.elements.action.value,due:f.elements.due.value}});toast('Tindak lanjut dibuat.');render()}catch(x){toast(x.message,true)}}},
+    el('label',{style:'flex:2'},'Tindakan',el('input',{name:'action',required:true,maxlength:300})),el('label',{style:'flex:1'},'Target',el('input',{name:'due',type:'date'})),el('button',{class:'btn sm',type:'submit'},'Tambah'));return f})()))};
+/* ---------- ADMIN ---------- */
+VIEWS.admin=async main=>{if(S.tab==='dash')return VIEWS.staff(main,'admin');
+ if(S.tab==='audit'){const d=await api('/api/admin/audit');main.append(el('div',{class:'card'},tbl(['Waktu','Peran','Aksi','Target','Detail','Pengguna'],d.items.map(a=>[a.created_at.replace('T',' '),a.role||'-',a.action,a.target||'-',a.detail||'-',a.email||'-']))));return}
+ const d=await api('/api/admin/users'),mids=d.midwives;
+ main.append(el('div',{class:'card'},h3('Pengguna'),tbl(['Nama','Email','Peran','Status','Bidan pendamping',''],d.users.map(u=>[u.full_name,u.email,ROLE[u.role],u.is_active?'Aktif':'Nonaktif',
+  u.role==='patient'?el('select',{'aria-label':'Bidan untuk '+u.full_name,onchange:async e=>{try{await api('/api/admin/assign',{method:'POST',body:{patient_id:u.pid,midwife_id:+e.target.value}});toast('Penugasan diperbarui.')}catch(x){toast(x.message,true)}}},[el('option',{value:''},'— belum ditugaskan —'),...mids.map(m=>el('option',{value:m.id,selected:m.id===u.mid},m.name))]):'-',
+  u.role==='admin'?'':el('button',{class:'btn sm o',onclick:async()=>{try{await api('/api/admin/users/'+u.id,{method:'PATCH',body:{active:!u.is_active}});render()}catch(x){toast(x.message,true)}}},u.is_active?'Nonaktifkan':'Aktifkan')])),
+  (()=>{const f=el('form',{class:'grid',onsubmit:async e=>{e.preventDefault();try{await api('/api/admin/users',{method:'POST',body:{name:f.elements.name.value,email:f.elements.email.value,role:f.elements.role.value,password:f.elements.password.value}});toast('Akun dibuat.');render()}catch(x){toast(x.message,true)}}},
+   el('label',{},'Nama',el('input',{name:'name',required:true})),el('label',{},'Email',el('input',{name:'email',type:'email',required:true})),el('label',{},'Peran',el('select',{name:'role'},el('option',{value:'patient'},'Ibu hamil'),el('option',{value:'midwife'},'Bidan'))),el('label',{},'Kata sandi (min. 10 karakter)',el('input',{name:'password',type:'password',minlength:10,required:true})),el('button',{class:'btn sm',type:'submit'},'Buat akun uji'));return f})()))};
+boot();
+</script></body></html>
